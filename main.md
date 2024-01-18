@@ -89,7 +89,7 @@ dead leaves) datasets.
 
 ### 可測空間
 
-- 組み$(\Omega, F)$
+- 組み $(\Omega, F)$
         - $\Omega$ : set
         - $F$ : 完全加法族
                 - 完全加法性を満たす、$\Omega$の冪集合の部分集合
