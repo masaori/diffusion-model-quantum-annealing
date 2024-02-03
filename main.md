@@ -134,52 +134,99 @@ dead leaves) datasets.
         - $X$は、可測な、事象の全体からボレル集合族への写像である
 
 ### $X$に由来する確率測度
+確率空間$(\Omega, F, P)$と確率変数$X$について、
 
-- $P_{X}: \mathfrak{B}(\mathbb{R})\to \mathbb{R},\ A \mapsto P(X^{-1}(A))$
-        - $(\mathbb{R},\mathfrak{B}(\mathbb{R}),P_X) は確率空間になっている$
+$$P_{X}: \mathfrak{B}(\mathbb{R})\to \mathbb{R},\ A \mapsto P(X^{-1}(A))$$
 
-### 確率密度関数 (= Px1の時に確率分布って適当に書かれてたらこれ)
-
-
-$$
-p_{X_{abs}}:\mathbb{R} \to \mathbb{R}_{\geq0}
-$$
-
-- 気温が20度から30度になる確率を求めたい時に、
-        - 「気温x度」を実数xにマップする ← 確率変数という
-        - 実数直線上で20-30の区間で積分する
-
-### 確率質量関数 (= Px3の時に確率分布って適当に書かれてたらこれ)
-
-
-$$
-p_{x_{3}}:\mathbb{R} \to [0,1] \\ x \mapsto P_{x_{3}}(\{x\})
-$$
-
-
-## 多変数の場合
-
+が定まり、
+$(\mathbb{R},\mathfrak{B}(\mathbb{R}),P_X)$は確率空間になっている
 
 ### d変数確率変数 (random variety)
+(2/2)
+- 問題意識
+  - wikipediaとかで「確率変数X, Yがある」とか言ってる局面をどう読み解けばいいのか？
+    - 今今しっくりきている仮説は$(\Omega, F)$があって、確率変数は$X$一つで、確率測度$P, Q$がある、つまり$(\Omega, F, P), (\Omega, F, Q)$がある、という状況なのでは？？
+    - なので、そのように記号を振り直したいが、「確率変数が複数ある」と言いたい状況として「軸」にindexがついててほしい、というのがありそう、なので、これと整合するようにはどうすればいいか
+- 関数解析に踏み込むとしたら
+    - [形状最適化問題](https://www.morikita.co.jp/books/mid/061461)
+- vscodeでTexで書く方法に移植する
+- ↑βが小さい時にforwardとreverseが等しくなる、はよくわからないので保留
+- モデルの実装(on github)も見てみる [https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py)
+- 一旦読み終えてみてから、参考文献見てみる？
+        - ガウス過程云々
 
 
 $X_{1}, \dots ,X_{d}:1変数確率変数$
 
 
 $$
-X^{d}: (\Omega, F)\to (\mathbb{R}^d,\mathfrak{B}(\mathbb{R}^d)), \  \omega \mapsto (X_{1}(\omega), \dots,X_{d}(\omega))
+(X_{1}, \dots ,X_{d}): (\Omega, F)\to (\mathbb{R}^d,\mathfrak{B}(\mathbb{R}^d)), \  \omega \mapsto (X_{1}(\omega), \dots,X_{d}(\omega))
 $$
 
 
-### 確率密度関数
+### Lebesgueの分解定理
 
-Radon-Nikodymの定理の多変数版から定まる
-$$p_{X^{d}_{abs}}: \mathbb{R}^{d} \rightarrow \mathbb{R}_{\geq 0}$$
+$\mu: B(\mathbb{R}) \rightarrow \mathbb{R}$ を Lebegue Measure とする.
+$$
+P_X=P_{X_{abs}}+P_{X_{sing}}+P_{X_{dis}} \ s.t.
+$$
+- $P_{X_{abs}}$ は $\mu$ について、 absolutely conti.
+    - すなわち、 $\mu(A)=0$ ならば $P_{X_{abs}}(A)=0(\forall A \in B(\mathbb{R}))$
+- $P_{X_{sing}}$ は $\mu$ について、conti. かつ、 singular.
+    - すなわち、 $P_{X_{sing}}(a)=0(\forall a \in \mathbb{R})$ かつ、 $\exists A \in A(\mathbb{R})$ s.t. $\mu(A)=0$ and $P_{X_{sing}}\left(A^c\right)=0$
+- $P_{X_{dis}}$ は $\mu$ について、 discrete.
+    - すなわち、 $\exists\left\{a_n\right\}_{n=1}^{\infty} \subset \mathbb{R}$ s.t. $P_{X_{dis}}=\sum_{i=1}^{\infty} a_i \chi_{P_i}(A)$ $\left(\right.$ ただし、 $\chi_{P_i}: B(\mathbb{R}) \rightarrow \mathbb{R}, \chi_{P_i}(A):=\left\{\begin{array}{l}0\left(p_i \notin A\right) \\ 1\left(p_i \in A\right)\end{array}\right)$
+
+と一意に分解できる.
+
+- 拡散モデルの数理を読む上ではPx1だけ考えるでOK
+
+### Radon-Nikodymの定理
+$X$: 確率変数
+
+Lebegue の $P_{X_{abs}}$ について、以下を満たす Integrable な関数 $p_{X_{abs}}: \mathbb{R} \rightarrow \mathbb{R}_{\geq 0}$ が存在する。
+$$
+\int_{-\infty}^x p_{X_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{X_{abs}}(X \leq x)
+$$
+
+この $P_{X_{abs}}$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
+
+- 気温が20度から30度になる確率を求めたい時に、
+        - 「気温x度」を実数xにマップする ← 確率変数という
+        - 実数直線上で20-30の区間で積分する
+
+#### 多変数の場合
+$(X_{1},\dots,X_{d})$: d変数確率変数について、
+
+
+Lebegue の $P_{(X_{1}, \dots ,X_{d})_{abs}}$ について、以下を満たす Integrable な関数 $p_{(X_{1}, \dots ,X_{d})_{abs}}: \mathbb{R}^{d} \rightarrow \mathbb{R}_{\geq 0}$ が存在する。
+$$
+\int_{-\infty}^{x_{1}} \cdots \int_{-\infty}^{x_{d}} p_{(X_{1}, \dots ,X_{d})_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{(X_{1}, \dots ,X_{d})_{abs}}(X_{1} \leq x_{1} \land \dots \land X_{d} \leq x_{d})
+$$
+
+この $p_{(X_{1}, \dots ,X_{d})_{abs}}$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
+
+> [フビニの定理](https://ja.wikipedia.org/wiki/%E3%83%95%E3%83%93%E3%83%8B%E3%81%AE%E5%AE%9A%E7%90%86) により、$\mathbb{R}^{d}$についての積分はd回の$\mathbb{R}$についての積分と等しくなる。
 
 
 ### 累積分布関数
 
 - 確率密度関数を$-\infty$から$x$まで積分したもの
+
+
+### 確率質量関数 (= Px3の時に確率分布って適当に書かれてたらこれ)
+
+
+$$
+p_{x_{dis}}:\mathbb{R} \to [0,1] \\ x \mapsto P_{x_{3}}(\{x\})
+$$
+
+
+### d変数確率密度関数
+
+Radon-Nikodymの定理の多変数版から定まる
+$$p_{(X_{1}, \dots ,X_{d})_{abs}}: \mathbb{R}^{d} \rightarrow \mathbb{R}_{\geq 0}$$
+
 
 ### 条件付き確率
 
@@ -197,105 +244,83 @@ $$
 
 ### 条件つき確率密度関数
 
-$Y_{1}, Y_{2}$: 1変数確率変数によって定まる$Y^{2}$: 2変数確率変数
+$(Y_{1}, Y_{2})$: 1変数確率変数$Y_{1}, Y_{2}$によって定まる2変数確率変数
 
 
 $p_{(Y_{1}, Y_{2})_{abs}}(\cdot\mid\cdot):\mathbb{R}\times\mathbb{R} \to \mathbb{R}_{\geq 0}$
 
 
 $$
-p_{(Y_{1}, Y_{2})_{abs}}(y_{1} \mid y_{2}) := \frac{p_{Y^{2}_{abs}}(y_{1}, y_{2})}{p_{Y_{2\ abs}}(y_{2})}
+p_{(Y_{1}, Y_{2})_{abs}}(y_{1} \mid y_{2}) := \frac{p_{(Y_{1}, Y_{2})_{abs}}(y_{1}, y_{2})}{p_{Y_{2\ abs}}(y_{2})}
+$$
+
+### 交差エントロピー (cross entropy)
+
+確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
+確率変数$X, Y$について、
+
+
+$$
+\begin{align*}
+H_{cross}(Y,X) &:= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{X_{abs}}(x)log(p_{X_{abs}}(x))
+\end{align*}
 $$
 
 
----
+
+### 条件付きエントロピー (conditional entropy)
+
+確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
+確率変数$X, Y$について、
 
 
-[%E6%B7%B1%E5%B1%A4%E7%94%9F%E6%88%90%E3%81%A6%E3%82%99%E4%BD%BF%E3%81%86%E7%A2%BA%E7%8E%87%E8%AB%96.pdf](https://prod-files-secure.s3.us-west-2.amazonaws.com/a95e1e6d-ab5d-426a-b5b6-652ced6dcd2a/3241d1d3-e482-46b1-949a-1873d07c9c6e/%E6%B7%B1%E5%B1%A4%E7%94%9F%E6%88%90%E3%81%A6%E3%82%99%E4%BD%BF%E3%81%86%E7%A2%BA%E7%8E%87%E8%AB%96.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45HZZMZUHI%2F20240118%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240118T043703Z&X-Amz-Expires=3600&X-Amz-Signature=9fb2ee88ea9fee61c1b622867c2203fa55711d24b7155c0a4abe1eb88b743dcc&X-Amz-SignedHeaders=host&x-id=GetObject)
-
-
-## 定理
-
-
-### Lebesgueの分解定理
-
-$\mu: B(\mathbb{R}) \rightarrow \mathbb{R}$ を Lebegue Measure とする.
 $$
-P_X=P_{X_{abs}}+P_{x_{sing}}+P_{x_{dis}} \ s.t.
-$$
-- $P_{X_{abs}}$ は $\mu$ について、 absolutely conti.
-    - すなわち、 $\mu(A)=0$ ならば $P_{X_{abs}}(A)=0(\forall A \in B(\mathbb{R}))$
-- $P_{x_{sing}}$ は $\mu$ について、conti. かつ、 singular.
-    - すなわち、 $P_{x_{sing}}(a)=0(\forall a \in \mathbb{R})$ かつ、 $\exists A \in A(\mathbb{R})$ s.t. $\mu(A)=0$ and $P_{x_{sing}}\left(A^c\right)=0$
-- $P_{x_{dis}}$ は $\mu$ について、 discrete.
-    - すなわち、 $\exists\left\{a_n\right\}_{n=1}^{\infty} \subset \mathbb{R}$ s.t. $P_{x_{dis}}=\sum_{i=1}^{\infty} a_i \chi_{P_i}(A)$ $\left(\right.$ ただし、 $\chi_{P_i}: B(\mathbb{R}) \rightarrow \mathbb{R}, \chi_{P_i}(A):=\left\{\begin{array}{l}0\left(p_i \notin A\right) \\ 1\left(p_i \in A\right)\end{array}\right)$
-
-と一意に分解できる.
-
-- 拡散モデルの数理を読む上ではPx1だけ考えるでOK
-
-### Radon-Nikodymの定理
-$X$: 確率変数
-
-Lebegue の $P_{X_{abs}}$ について、以下を満たす Integrable な関数 $p_{X_{abs}}: \mathbb{R} \rightarrow \mathbb{R}_{\geq 0}$ が存在する。
-$$
-\int_{-\infty}^x p_{X_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{X_{abs}}(X \leq x)
+\begin{align*}
+H_{condi}(Y|X) &:= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{(Y, X)_{abs}}(y, x) \log \left(\frac{p_{(Y, X)_{abs}}(y, x)}{p_{X_{abs}}(x)}\right) \\
+&= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{(Y, X)_{abs}}(y, x) \log \left(p_{(Y,X)_{abs}}(y \mid x)\right) \\
+\end{align*}
 $$
 
-この $P_{X_{abs}}$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
+### 結合エントロピー (joint entropy)
 
-#### 多変数の場合
-$X_{1},\dots,X_{d}$: 1変数確率変数によって定まる、$X^{d}$: d変数確率変数について、
+確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
+確率変数$X, Y$について、
 
 
-Lebegue の $P_{X_{abs}}$ について、以下を満たす Integrable な関数 $p_{X^{d}_{abs}}: \mathbb{R}^{d} \rightarrow \mathbb{R}_{\geq 0}$ が存在する。
 $$
-\int_{-\infty}^{x_{1}} \cdots \int_{-\infty}^{x_{d}} p_{X_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{X_{abs}}(X_{1} \leq x_{1} \land \dots \land X_{d} \leq x_{d})
+\begin{align*}
+H_{joint}(Y, X) &:= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{(Y, X)_{abs}}(y, x) \log \left(p_{(Y, X)_{abs}}(y, x)\right)
+\end{align*}
 $$
 
-この $P_{X_{abs}}$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
 
-> [フビニの定理](https://ja.wikipedia.org/wiki/%E3%83%95%E3%83%93%E3%83%8B%E3%81%AE%E5%AE%9A%E7%90%86) により、$\mathbb{R}^{d}$についての積分はd回の$\mathbb{R}$についての積分と等しくなる。
+### 相互情報量 (Mutual information)
+
+確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
+確率変数$X, Y$について、
+
+
+$$
+\begin{align*}
+I(Y;X) &:= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{(Y, X)_{abs}}(y, x) \log \left(\frac{p_{(Y, X)_{abs}}(y, x)}{p_{Y_{abs}}(y)p_{X_{abs}}(x)}\right)
+\end{align*}
+$$
+
+
 
 ### KL-ダイバージェンス
 
+$X$: 可測空間$(\Omega, F)$上の確率変数
 
+$(\Omega, F, P),(\Omega,F, Q)$: 確率空間
+
+$(\mathbb{R},\mathfrak{B}(\mathbb{R}), P_{X}), (\mathbb{R},\mathfrak{B}(\mathbb{R}), Q_{X})$: 確率空間
+
+について、
 $$
-D_{K L}(P \| Q):=\sum_{i=1}^{\infty} p_{X_{dis}}\left(x_i\right) \log \frac{p_{X_{dis}}\left(x_i\right)}{q_{X_{dis}}\left(x_i\right)}+\int_{\mathbb{R}} p_{X_{abs}}(x) \log \frac{p_{X_{abs}}(x)}{q_{X_{abs}}(x)} d x
-$$
-
-
-$p, q$を確率質量関数とするとき、
-
-
-$$
-D_{K L}(p \| q):=\sum_{i=1}^{\infty} p\left(x_i\right) \log \frac{p\left(x_i\right)}{q\left(x_i\right)}
+D_{K L}(P_{X} \| Q_{X}):=\sum_{i=1}^{\infty} p_{X_{dis}}\left(x_i\right) \log \frac{p_{X_{dis}}\left(x_i\right)}{q_{X_{dis}}\left(x_i\right)}+\int_{\mathbb{R}} p_{X_{abs}}(x) \log \frac{p_{X_{abs}}(x)}{q_{X_{abs}}(x)} d x
 $$
 
-
-### 条件付きエントロピー
-
-確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),F)$について、
-確率密度関数$p_{X_{abs}}$、確率変数$X, Y$について、
-
-
-$$
-H(Y|X) := -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p(x, y) \log \frac{p(x, y)}{p(x)}
-$$
-
-
-(1/18)
-
-- ↑続き
-    - [https://en.wikipedia.org/wiki/Conditional_entropy](https://en.wikipedia.org/wiki/Conditional_entropy)
-    - 条件付き確率密度関数が定まったので、これを用いて定める
-- 関数解析に踏み込むとしたら
-    - [形状最適化問題](https://www.morikita.co.jp/books/mid/061461)
-- vscodeでTexで書く方法に移植する
-- ↑βが小さい時にforwardとreverseが等しくなる、はよくわからないので保留
-- モデルの実装(on github)も見てみる [https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py)
-- 一旦読み終えてみてから、参考文献見てみる？
-        - ガウス過程云々
 
 ---
 
