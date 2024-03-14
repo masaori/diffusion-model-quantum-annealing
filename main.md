@@ -136,38 +136,34 @@ dead leaves) datasets.
 ### $X$に由来する確率測度
 確率空間$(\Omega, F, P)$と確率変数$X$について、
 
-$$P_{X}: \mathfrak{B}(\mathbb{R})\to \mathbb{R},\ A \mapsto P(X^{-1}(A))$$
+$$P_{X}: \mathfrak{B}(\mathbb{R}) \to [0,1],\ A \mapsto P(X^{-1}(A))$$
 
 が定まり、
 $(\mathbb{R},\mathfrak{B}(\mathbb{R}),P_X)$は確率空間になっている
 
 ### d変数確率変数 (random variety)
-(2/2)
-- 問題意識
-  - wikipediaとかで「確率変数X, Yがある」とか言ってる局面をどう読み解けばいいのか？
-    - 今今しっくりきている仮説は$(\Omega, F)$があって、確率変数は$X$一つで、確率測度$P, Q$がある、つまり$(\Omega, F, P), (\Omega, F, Q)$がある、という状況なのでは？？
-    - あるいは確率変数が複数ある場合は、それに対応する異なる確率測度が常にあるとか
-    - なので、そのように記号を振り直したいが、「確率変数が複数ある」と言いたい状況として「軸」にindexがついててほしい、というのがありそう、なので、これと整合するようにはどうすればいいか
-- 関数解析に踏み込むとしたら
-    - [形状最適化問題](https://www.morikita.co.jp/books/mid/061461)
-- vscodeでTexで書く方法に移植する
-- ↑βが小さい時にforwardとreverseが等しくなる、はよくわからないので保留
-- モデルの実装(on github)も見てみる [https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py)
-- 一旦読み終えてみてから、参考文献見てみる？
-        - ガウス過程云々
-
-
 $X_{1}, \dots ,X_{d}:1変数確率変数$
-
 
 $$
 (X_{1}, \dots ,X_{d}): (\Omega, F)\to (\mathbb{R}^d,\mathfrak{B}(\mathbb{R}^d)), \  \omega \mapsto (X_{1}(\omega), \dots,X_{d}(\omega))
 $$
 
+### $(X_{1}, \dots ,X_{d})$に由来する確率測度
+確率空間$(\Omega, F, P)$とd変数確率変数$(X_{1}, \dots ,X_{d})$について、
+
+$$P_{(X_{1}, \dots ,X_{d})}: \mathfrak{B}(\mathbb{R^{d}}) \to [0,1],\ A \mapsto P((X_{1}, \dots ,X_{d})^{-1}(A))$$
+
+が定まり、
+$(\mathbb{R},\mathfrak{B}(\mathbb{R}),P_X)$は確率空間になっている
+
 
 ### Lebesgueの分解定理
+確率空間$(\Omega, F, P)$と確率変数$X$について、
 
-$\mu: B(\mathbb{R}) \rightarrow \mathbb{R}$ を Lebegue Measure とする.
+$(\mathbb{R},\mathfrak{B}(\mathbb{R}), P_{X})$: 確率空間 が定まる。
+
+
+$\mu: \mathfrak{B}(\mathbb{R}) \rightarrow \mathbb{R}$ を Lebegue Measure とする.
 $$
 P_X=P_{X_{abs}}+P_{X_{sing}}+P_{X_{dis}} \ s.t.
 $$
@@ -180,7 +176,16 @@ $$
 
 と一意に分解できる.
 
-- 拡散モデルの数理を読む上ではPx1だけ考えるでOK
+- 拡散モデルの数理を読む上ではPabsだけ考えるでOK
+
+#### 多変数の場合
+確率空間$(\Omega, F, P)$と確率変数$(X_{1},\dots,X_{d})$について、
+
+$(\mathbb{R^{d}},\mathfrak{B}(\mathbb{R^{d}}), P_{(X_{1},\dots,X_{d})})$: 確率空間 が定まる。
+
+$\mu: \mathfrak{B}(\mathbb{R^{d}}) \rightarrow \mathbb{R}$ を Lebegue Measure とする.
+
+以下は、1変数の場合と同様。
 
 ### Radon-Nikodymの定理
 $X$: 確率変数
@@ -197,17 +202,25 @@ $$
         - 実数直線上で20-30の区間で積分する
 
 #### 多変数の場合
-$(X_{1},\dots,X_{d})$: d変数確率変数について、
+確率空間$(\Omega, F, P)$と$(X_{1},\dots,X_{d})$: d変数確率変数について、
 
+$(\mathbb{R},\mathfrak{B}(\mathbb{R}), P_{(X_{1},\dots,X_{d})})$: 確率空間 が定まる。
 
-Lebegue の $P_{(X_{1}, \dots ,X_{d})_{abs}}$ について、以下を満たす Integrable な関数 $p_{(X_{1}, \dots ,X_{d})_{abs}}: \mathbb{R}^{d} \rightarrow \mathbb{R}_{\geq 0}$ が存在する。
+Lebegue の $P_{(X_{1}, \dots ,X_{d})_{abs}}$ について、以下を満たす Integrable な関数 $p^{joint}_{(X_{1}, \dots ,X_{d})_{abs}}: \mathbb{R}^{d} \rightarrow \mathbb{R}_{\geq 0}$ が存在する。
 $$
-\int_{-\infty}^{x_{1}} \cdots \int_{-\infty}^{x_{d}} p_{(X_{1}, \dots ,X_{d})_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{(X_{1}, \dots ,X_{d})_{abs}}(X_{1} \leq x_{1} \land \dots \land X_{d} \leq x_{d})
+\int_{-\infty}^{x_{1}} \cdots \int_{-\infty}^{x_{d}} p^{joint}_{(X_{1}, \dots ,X_{d})_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{(X_{1}, \dots ,X_{d})_{abs}}(X_{1} \leq x_{1} \land \dots \land X_{d} \leq x_{d})
 $$
 
-この $p_{(X_{1}, \dots ,X_{d})_{abs}}$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
+この $p^{joint}_{(X_{1}, \dots ,X_{d})_{abs}}$ を、結合確率密度関数 (Joint Probabilty Density Function) と呼ぶ。
 
 > [フビニの定理](https://ja.wikipedia.org/wiki/%E3%83%95%E3%83%93%E3%83%8B%E3%81%AE%E5%AE%9A%E7%90%86) により、$\mathbb{R}^{d}$についての積分はd回の$\mathbb{R}$についての積分と等しくなる。
+
+$X_{1}, \dots ,X_{d}$ は互いに入れ替え可能である。
+特に、$d=2$の場合、
+$$
+p^{joint}_{(X_{1}, X_{2})_{abs}}(x_{1}, x_{2})=p^{joint}_{(X_{2}, X_{1})_{abs}}(x_{2}, x_{1})
+$$
+
 
 
 ### 累積分布関数
@@ -228,69 +241,145 @@ $$
 Radon-Nikodymの定理の多変数版から定まる
 $$p_{(X_{1}, \dots ,X_{d})_{abs}}: \mathbb{R}^{d} \rightarrow \mathbb{R}_{\geq 0}$$
 
+---
+↓一つの確率測度(確率分布)$P$について述べている
 
-### 条件付き確率
+### 平均情報量(エントロピー)
+$(\Omega, F, P): 確率空間$
 
+$X: 確率変数$
 
-$(\Omega, F, P): 確率空間, A, B \in F$について、
-
-
-$P(\cdot\mid\cdot):F\times F\to[0,1]$
-
-
-$$
-P(A|B):=\frac{\mathrm{P}(A \cap B)}{\mathrm{P}(B)}
-$$
-
-
-### 条件つき確率密度関数
-
-$(Y_{1}, Y_{2})$: 1変数確率変数$Y_{1}, Y_{2}$によって定まる2変数確率変数
-
-
-$p_{(Y_{1}, Y_{2})_{abs}}(\cdot\mid\cdot):\mathbb{R}\times\mathbb{R} \to \mathbb{R}_{\geq 0}$
-
+$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P_{X})$: 上記から定まる確率空間
 
 $$
-p_{(Y_{1}, Y_{2})_{abs}}(y_{1} \mid y_{2}) := \frac{p_{(Y_{1}, Y_{2})_{abs}}(y_{1}, y_{2})}{p_{Y_{2\ abs}}(y_{2})}
+H^{P}_{entropy}(X) := H_{entropy}(p_{X_{abs}}) := -\int_{x \in X} dx \ p_{X_{abs}}(x) \log p_{X_{abs}}(x)
 $$
 
-### 交差エントロピー (cross entropy)
-
-確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
-確率変数$X, Y$について、
-
-
-$$
-\begin{align*}
-H_{cross}(Y,X) &:= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{X_{abs}}(x)log(p_{X_{abs}}(x))
-\end{align*}
-$$
-
-
-
-### 条件付きエントロピー (conditional entropy)
-
-確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
-確率変数$X, Y$について、
-
-
-$$
-\begin{align*}
-H_{condi}(Y|X) &:= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{(Y, X)_{abs}}(y, x) \log \left(\frac{p_{(Y, X)_{abs}}(y, x)}{p_{X_{abs}}(x)}\right) \\
-&= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{(Y, X)_{abs}}(y, x) \log \left(p_{(Y,X)_{abs}}(y \mid x)\right) \\
-\end{align*}
-$$
 
 ### 結合エントロピー (joint entropy)
 
 確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
 確率変数$X, Y$について、
 
+$$
+\begin{align*}
+H^{P}_{joint}(X, Y) := H_{joint}(p^{joint}_{(X, Y)_{abs}}) &:= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(X, Y)_{abs}}(x, y) \log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)
+\end{align*}
+$$
+
+定義から直ちに、
+$$
+H_{joint}(Y, X) = H_{joint}(X, Y) \hspace{40pt} 論文(25)
+$$
+がいえる。
+
+### 条件付き確率
+
+$(\Omega, F, P): 確率空間, A, B \in F$について、
+
+
+$P_{condi}(\cdot\mid\cdot):F\times F\to[0,1]$
+
+
+$$
+P_{condi}(A|B):=\frac{\mathrm{P}(A \cap B)}{\mathrm{P}(B)}
+$$
+
+
+### 条件つき確率密度関数
+確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
+
+$(Y_{1}, Y_{2})$: 1変数確率変数$Y_{1}, Y_{2}$によって定まる2変数確率変数
+
+$p^{condi}_{(Y_{1}, Y_{2})_{abs}}(\cdot\mid\cdot):\mathbb{R}\times\mathbb{R} \to \mathbb{R}_{\geq 0}$
+
+
+$$
+p^{condi}_{(Y_{1}, Y_{2})_{abs}}(y_{1} \mid y_{2}):= \frac{p^{joint}_{(Y_{1}, Y_{2})_{abs}}(y_{1}, y_{2})}{p_{Y_{2\ abs}}(y_{2})}
+$$
+
+### 条件付きエントロピー (conditional entropy)
+
+確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
+
+確率変数$X, Y$について、
+
 
 $$
 \begin{align*}
-H_{joint}(Y, X) &:= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{(Y, X)_{abs}}(y, x) \log \left(p_{(Y, X)_{abs}}(y, x)\right)
+H^{P}_{condi}(Y|X) := H_{condi}(p^{joint}_{(Y, X)_{abs}}) &:= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \left(\frac{p^{joint}_{(Y, X)_{abs}}(y, x)}{p_{X_{abs}}(x)}\right) \\
+&= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \left(p^{condi}_{(Y,X)_{abs}}(y \mid x)\right) \\
+\end{align*}
+$$
+
+以下が成り立つ
+$$
+H^{P}_{condi}\left(Y \mid X\right)=H^{P}_{condi}\left(X \mid Y\right)+H^{P}_{entropy}\left(Y\right)-H^{P}_{entropy}\left(X\right)
+$$
+$Proof.$
+$$
+\begin{align*}
+(右辺) &= H^{P}_{condi}\left(X \mid Y\right)+H^{P}_{entropy}\left(Y\right)-H^{P}_{entropy}\left(X\right) \\
+
+&= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(X, Y)_{abs}}(x, y) \log \left(p^{condi}_{(X, Y)_{abs}}(x \mid y)\right)  - \int_{y \in Y} dy \ p_{Y_{abs}}(y) \log p_{Y_{abs}}(y) +\int_{x \in X} dx \ p_{X_{abs}}(x) \log p_{X_{abs}}(x) \hspace{40pt} (∵def.) \\
+
+&= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \log \left(\frac{
+        p^{joint}_{(X, Y)_{abs}}(x, y)
+}{
+        p_{Y_{abs}}(y)
+}\right)  - \int_{y \in Y} dy \ p_{Y_{abs}}(y) \log p_{Y_{abs}}(y) +\int_{x \in X} dx \ p_{X_{abs}}(x) \log p_{X_{abs}}(x) \hspace{40pt} (∵p_{joint}のdef.) \\
+
+&= -\int_{x \in X, y \in Y} dxdy \ \left(
+        p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(
+                \log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right) - \log \left(p_{Y_{abs}}(y)\right)
+        \right)
+\right)
+ - \int_{y \in Y} dy \ p_{Y_{abs}}(y) \log p_{Y_{abs}}(y) +\int_{x \in X} dx \ p_{X_{abs}}(x) \log p_{X_{abs}}(x) \\
+
+&= -\int_{x \in X, y \in Y} dxdy \ \left(
+        p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(\log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)\right)
+\right)
+\underbrace{
+        + \int_{x \in X, y \in Y} dxdy \ \left(
+                p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(
+                        \log \left(p_{Y_{abs}}(y)
+                \right)
+        \right)
+\right)
+}_{
+        \cancel{
+                + \int_{y \in Y} dy \ \left(
+                        p_{Y_{abs}}(y) \cdot \left(
+                                \log \left(p_{Y_{abs}}(y)\right)
+                        \right)
+
+                \right)
+        }
+}
+ \cancel{- \int_{y \in Y} dy \ p_{Y_{abs}}(y) \log p_{Y_{abs}}(y)}
+ + \int_{x \in X} dx \ p_{X_{abs}}(x) \log p_{X_{abs}}(x)
+\\
+&= -\int_{x \in X, y \in Y} dxdy \ \left(
+        p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(\log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)\right)
+\right)
++ \int_{x \in X} dx \ p_{X_{abs}}(x) \log p_{X_{abs}}(x)
+\\
+&= -\int_{x \in X, y \in Y} dxdy \ \left(
+        p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(\log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)\right)
+\right)
++ \int_{x \in X, y \in Y} dxdy \ \left(
+        p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(\log \left(p_{Y_{abs}}(y)\right)\right)
+\right) \\
+&= -\int_{x \in X, y \in Y} dxdy \ \left(
+        p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(\log \left(\frac{
+                p^{joint}_{(X, Y)_{abs}}(x, y)
+        }{
+                p_{Y_{abs}}(y)
+        }\right)\right)
+\right)
+\\
+&= H^{P}_{condi}\left(Y \mid X\right) \hspace{40pt} (論文(27))
+
 \end{align*}
 $$
 
@@ -303,11 +392,38 @@ $$
 
 $$
 \begin{align*}
-I(Y;X) &:= -\int_{x \in \mathcal{X}, y \in \mathcal{Y}} dxdy \ p_{(Y, X)_{abs}}(y, x) \log \left(\frac{p_{(Y, X)_{abs}}(y, x)}{p_{Y_{abs}}(y)p_{X_{abs}}(x)}\right)
+I(Y;X) &:= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \left(\frac{p^{joint}_{(Y, X)_{abs}}(y, x)}{p_{Y_{abs}}(y)p_{X_{abs}}(x)}\right)     
 \end{align*}
 $$
 
+次回(3/14)
+- Appendix Aの各定理をまとめる。(28) - (36)
 
+---
+↓２つの確率測度(確率分布)$P, Q$について述べている
+
+### 交差エントロピー (cross entropy)
+
+$X$: 可測空間$(\Omega, F)$上の確率変数
+
+$(\Omega, F, P),(\Omega,F, Q)$: 確率空間
+
+$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P_{X}), (\mathbb{R}, \mathfrak{B}(\mathbb{R}),Q_{X})$: 上記から定まる確率空間
+
+について、
+
+
+$$
+\begin{align*}
+H_{cross}(P_{X}, Q_{X}) &:= -\sum_{i=1}^{\infty} p_{X_{dis}}\left(x_i\right) \log \left(q_{X_{dis}}\left(x_i\right)\right) - \int_{x \in \mathbb{R}} dx \ p_{X_{abs}}(x)log(q_{X_{abs}}(x))
+\end{align*}
+$$
+
+$p_{X_{dis}}=q_{X_{dis}}=0$のとき、
+$$
+H_{cross}(p_{X_{abs}}, q_{X_{abs}}) := H_{cross}(P_{X}, Q_{X})
+$$
+ともかく。
 
 ### KL-ダイバージェンス
 
@@ -315,12 +431,35 @@ $X$: 可測空間$(\Omega, F)$上の確率変数
 
 $(\Omega, F, P),(\Omega,F, Q)$: 確率空間
 
-$(\mathbb{R},\mathfrak{B}(\mathbb{R}), P_{X}), (\mathbb{R},\mathfrak{B}(\mathbb{R}), Q_{X})$: 確率空間
+$(\mathbb{R},\mathfrak{B}(\mathbb{R}), P_{X}), (\mathbb{R},\mathfrak{B}(\mathbb{R}), Q_{X})$: 上記から定まる確率空間
 
 について、
 $$
 D_{K L}(P_{X} \| Q_{X}):=\sum_{i=1}^{\infty} p_{X_{dis}}\left(x_i\right) \log \frac{p_{X_{dis}}\left(x_i\right)}{q_{X_{dis}}\left(x_i\right)}+\int_{\mathbb{R}} p_{X_{abs}}(x) \log \frac{p_{X_{abs}}(x)}{q_{X_{abs}}(x)} d x
 $$
+
+$p_{X_{dis}}=q_{X_{dis}}=0$のとき、
+$$
+D_{K L}(p_{X_{abs}} \| q_{X_{abs}}) := D_{K L}(P_{X} \| Q_{X})
+$$
+ともかく。
+
+##### 確率変数が複数ある状況の場合
+$X, Y$: 可測空間$(\Omega, F)$上の確率変数
+
+$(\Omega, F, P)$: 確率空間
+
+を考えると、
+
+$id_{\mathbb{R}}$: 可測空間$(\mathbb{R},\mathfrak{B}(\mathbb{R}))$上の確率変数 (恒等写像)
+
+$(\mathbb{R},\mathfrak{B}(\mathbb{R}), P_{X}),(\mathbb{R},\mathfrak{B}(\mathbb{R}), P_{Y})$: 確率空間
+
+$(\mathbb{R},\mathfrak{B}(\mathbb{R}), (P_{X})_{id_{\mathbb{R}}}), (\mathbb{R},\mathfrak{B}(\mathbb{R}), (Q_{X})_{id_{\mathbb{R}}})$: 確率空間
+
+として、KL-ダイバージェンス を考えることができる。
+
+
 
 
 ---
@@ -678,14 +817,49 @@ $= - \int_{X^{(0 \dots T)}} d\mathbf{y}^{(0 \dots T)} \  q^{(0\dots T)}_{X_{abs}
 
 
 $=- \int_{X^{(0 \dots T)}} d\mathbf{y}^{(0 \dots T)} \  q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)}\right) \cdot \left( \log \left[p^{(T)}_{X_{abs}}\left(\mathbf{y}^{(T)}\right) \right] + \sum_{t=1}^T \left(\log \left[  \frac{ T_{\pi}\left(\mathbf{y}^{(t-1)} \mid \mathbf{y}^{(t)};\beta_{t}\right)}{T_{\pi}\left(\mathbf{y}^{(t)} \mid \mathbf{y}^{(t-1)};\beta_{t}\right)} \right]\right) \right)
-$ (∵ logを和に分解)
+$ (1) (∵ logを和に分解)
+
+$=- \int_{X^{(0 \dots T)}} d\mathbf{y}^{(0 \dots T)} \  q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)}\right) \cdot 
+\left(
+        \sum_{t=1}^T \left(\log \left[  \frac{ T_{\pi}\left(\mathbf{y}^{(t-1)} \mid \mathbf{y}^{(t)};\beta_{t}\right)}{T_{\pi}\left(\mathbf{y}^{(t)} \mid \mathbf{y}^{(t-1)};\beta_{t}\right)} \right]\right)
+         + \log \left[p^{(T)}_{X_{abs}}\left(\mathbf{y}^{(T)}\right) \right]
+\right)
+$ (1.5) (∵ 括弧内の和の順序入れ替え)
 
 
-$=- \int_{X^{(0 \dots T)}} d\mathbf{y}^{(0 \dots T)} \ q_{X_{abs}}^{(0)}\left(\mathbf{y}^{(0)}\right) \cdot q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)}\right) \cdot \sum_{t=1}^T \left(\log \left[  \frac{ T_{\pi}\left(\mathbf{y}^{(t-1)} \mid \mathbf{y}^{(t)};\beta_{t}\right)}{T_{\pi}\left(\mathbf{y}^{(t)} \mid \mathbf{y}^{(t-1)};\beta_{t}\right)} \right] \right) - \int_{X^{(0 \dots T)}} d\mathbf{y}^{(0 \dots T)} \ q_{X_{abs}}^{(0)}\left(\mathbf{y}^{(0)}\right) \cdot \log \left[p^{(T)}_{X_{abs}}\left(\mathbf{y}^{(T)}\right) \right]$(∵ 積分を和で分解)
+$=- \int_{X^{(0 \dots T)}} \left( \ q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)}\right) \cdot \sum_{t=1}^T \left(\log \left[ \frac{ T_{\pi}\left(\mathbf{y}^{(t-1)} \mid \mathbf{y}^{(t)};\beta_{t}\right)}{T_{\pi}\left(\mathbf{y}^{(t)} \mid \mathbf{y}^{(t-1)};\beta_{t}\right)} \right] \right) \right) d\mathbf{y}^{(0 \dots T)} - \int_{X^{(0 \dots T)}} \left( \ q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)} \right) \cdot \log \left[p^{(T)}_{X_{abs}}\left(\mathbf{y}^{(T)}\right) \right] \right) d\mathbf{y}^{(0 \dots T)} $ (2) (∵ 積分を和で分解)
+
+$=- \int_{X^{(0 \dots T)}} \left( \ q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)}\right) \cdot \sum_{t=1}^T \left(\log \left[ \frac{ T_{\pi}\left(\mathbf{y}^{(t-1)} \mid \mathbf{y}^{(t)};\beta_{t}\right)}{T_{\pi}\left(\mathbf{y}^{(t)} \mid \mathbf{y}^{(t-1)};\beta_{t}\right)} \right] \right) \right) d\mathbf{y}^{(0 \dots T)} - \int_{X^{(T)}} \int_{X^{(0 \dots T-1)}} \left( \ q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)} \right) \cdot \log \left[p^{(T)}_{X_{abs}}\left(\mathbf{y}^{(T)}\right) \right] \right) d\mathbf{y}^{(0 \dots T)} $ (2.5) (∵ 第二項の積分を被積分変数で分解)
 
 
-$$
-= - \int_{X^{(0 \dots T)}} d\mathbf{y}^{(0 \dots T)} \ q_{X_{abs}}^{(0)}\left(\mathbf{y}^{(0)}\right) \cdot q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)}\right) \cdot \sum_{t=1}^T \left(\log \left[  \frac{ T_{\pi}\left(\mathbf{y}^{(t-1)} \mid \mathbf{y}^{(t)};\beta_{t}\right)}{T_{\pi}\left(\mathbf{y}^{(t)} \mid \mathbf{y}^{(t-1)};\beta_{t}\right)} \right] \right) - \int_{X^{(0 \dots T)}} d\mathbf{y}^{(0 \dots T)} \ q_{X_{abs}}^{(0)}\left(\mathbf{y}^{(0)}\right) \cdot \log \left[p^{(T)}_{X_{abs}}\left(\mathbf{y}^{(T)}\right) \right]$$
+$=- \int_{X^{(0 \dots T)}} \left( \ q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)}\right) \cdot \sum_{t=1}^T \left(\log \left[ \frac{ T_{\pi}\left(\mathbf{y}^{(t-1)} \mid \mathbf{y}^{(t)};\beta_{t}\right)}{T_{\pi}\left(\mathbf{y}^{(t)} \mid \mathbf{y}^{(t-1)};\beta_{t}\right)} \right] \right) \right) d\mathbf{y}^{(0 \dots T)} - \int_{X^{(T)}} \left( \ q_{X_{abs}}^{(T)}\left(\mathbf{y}^{(T)}\right) \cdot \log \left[p^{(T)}_{X_{abs}}\left(\mathbf{y}^{(T)}\right) \right] \right) d\mathbf{y}^{(T)} $ (3) (∵ 第二項の内側の積分実行)
+
+
+$
+= - \int_{X^{(0 \dots T)}} d\mathbf{y}^{(0 \dots T)} \ q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)}\right) \cdot \sum_{t=1}^T \left(\log \left[  \frac{ T_{\pi}\left(\mathbf{y}^{(t-1)} \mid \mathbf{y}^{(t)};\beta_{t}\right)}{T_{\pi}\left(\mathbf{y}^{(t)} \mid \mathbf{y}^{(t-1)};\beta_{t}\right)} \right] \right) - H_{cross}\left(q^{(T)}_{X_{abs}}, p^{(T)}_{X_{abs}}\right)
+$ (4) 
+
+$
+= - \int_{X^{(0 \dots T)}} d\mathbf{y}^{(0 \dots T)} \ q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0)},\mathbf{y}^{(1 \dots T)}\right) \cdot \sum_{t=1}^T \left(\log \left[  \frac{ T_{\pi}\left(\mathbf{y}^{(t-1)} \mid \mathbf{y}^{(t)};\beta_{t}\right)}{T_{\pi}\left(\mathbf{y}^{(t)} \mid \mathbf{y}^{(t-1)};\beta_{t}\right)} \right] \right) - H_{cross}\left(q^{(T)}_{X_{abs}}, p^{(T)}_{X_{abs}}\right)
+$ (5) <- (論文14と対応させたい)
+
+
+
+
+
+(2/22)
+- (次回:Appendix B. で、上記の計算を進める)
+  - $H_{q}(X^{(T)})$ を、定義に合わせる
+  - すると、Appendix B. (43) に着地
+  - Appendix A.を読む
+     - ↑ Lの下限が 2.4 (14) の形にすることで示せる
+- 関数解析に踏み込むとしたら
+    - [形状最適化問題](https://www.morikita.co.jp/books/mid/061461)
+- vscodeでTexで書く方法に移植する
+- ↑βが小さい時にforwardとreverseが等しくなる、はよくわからないので保留
+- モデルの実装(on github)も見てみる [https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py)
+- 一旦読み終えてみてから、参考文献見てみる？
+        - ガウス過程云々
 
 
 ## 2.5. Multiplying Distributions, and Computing Posteriors
