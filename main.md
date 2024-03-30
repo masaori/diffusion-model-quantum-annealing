@@ -342,10 +342,9 @@ $$
 \underbrace{
         + \int_{x \in X, y \in Y} dxdy \ \left(
                 p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(
-                        \log \left(p_{Y_{abs}}(y)
+                        \log \left(p_{Y_{abs}}(y)\right)
                 \right)
         \right)
-\right)
 }_{
         \cancel{
                 + \int_{y \in Y} dy \ \left(
@@ -396,8 +395,6 @@ I(Y;X) &:= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \
 \end{align*}
 $$
 
-次回(3/14)
-- Appendix Aの各定理をまとめる。(28) - (36)
 
 ---
 ↓２つの確率測度(確率分布)$P, Q$について述べている
@@ -700,8 +697,6 @@ $T_{\pi}: \mathbb{R}^{n}\times\mathbb{R}^{n}\times\mathbb{R}\to\mathbb{R},\ \lef
 
 
 $\pi: \mathbb{R}^{n}\to\mathbb{R}$ は、以下の第二種フレドホルム積分方程式の解
-
-
 $$
 \begin{aligned}\pi(\mathbf{y}) & =\int d \mathbf{y}^{\prime} T_\pi\left(\mathbf{y} \mid \mathbf{y}^{\prime} ; \beta\right) \pi\left(\mathbf{y}^{\prime}\right)\end{aligned}
 $$
@@ -730,11 +725,151 @@ $q^{(0\dots i)}_{X_{abs}}:\prod_{t=0}^{i} X^{(t)}\to\mathbb{R}$を
 
 
 $$
-q^{(0\dots i)}_{X_{abs}}(\mathbf{x}^{(0\dots i)}) := q^{(0)}_{X_{abs}}\left(\mathbf{x}^{(0)}\right) \prod_{t=1}^i T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+q^{(0\dots i)}_{X_{abs}}(\mathbf{x}^{(0\dots i)})
+        := q^{(0)}_{X_{abs}}\left(\mathbf{x}^{(0)}\right) \prod_{j=1}^i 
+                \left(
+                        T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
+                \right)
 $$
 
 
 $q^{(T)}_{X_{abs}}:X^{(T)}\to\mathbb{R},\ q^{(T)}_{X_{abs}}(\mathbf{x}^{(T)}) := \int d \mathbf{y}^{(0 \dots T-1)} q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0\dots T-1)},\mathbf{x}^{(T)}\right)$
+
+##### 論文との対応
+
+$H_{q}(\mathbf{x}^{(t)}) = H_{entropy}(q^{(0\dots t)}_{X_{abs}})$
+
+#### 定理
+##### $H_{entropy}(q^{(0\dots t)}_{X_{abs}}) \geq H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})$ (論文(28))
+###### proof.
+
+###### 作業
+$$
+q^{(0\dots t)}_{X_{abs}}(\mathbf{x}^{(0\dots t)})
+        = q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^t 
+                \left(
+                        T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
+                \right)
+$$
+であるから、
+$$
+\begin{align*}
+(左辺) = H_{entropy}(q^{(0\dots t)}_{X_{abs}}) &= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)} q^{(0\dots t)}_{X_{abs}}(\mathbf{x}^{(0\dots t)}) \cdot \log \left( q^{(0\dots t)}_{X_{abs}}(\mathbf{x}^{(0\dots t)}) \right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)} \ 
+        q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^t                 
+                \left(
+                        T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
+                \right)
+                 \cdot \log \left(
+                        q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^t 
+                        \left(
+                                T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
+                        \right)
+                \right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)} 
+        q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^{t-1}                 
+                \left(
+                        T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
+                \right)
+                \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \cdot \log \left(
+                        q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^{t-1}                 
+                \left(
+                        T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
+                \right)
+                \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)}
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot \log \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \right) \\
+&=  -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)}
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot \left(
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+                + \log \left(
+                        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \right)
+        \right) \\
+\end{align*}
+$$
+
+ここで、変数分離したいというモチベーションのもと、作業仮定として、
+$$
+T_\pi\left(\mathbf{y} \mid \mathbf{y}^{\prime} ; \beta\right) :=
+        \left(
+                \frac{1}{\int d \mathbf{y}^{\prime\prime} \pi\left(\mathbf{y}^{\prime\prime} \right) }
+        \right) \cdot \pi(\mathbf{y})
+$$
+とおいてみると、
+$$
+\begin{align*}
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)}
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot \left(
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+                + \log \left(
+                        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \right)
+        \right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)}
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot \left(
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+                + \log \left(
+                        \frac{1}{\int d \mathbf{y}^{\prime\prime} \pi\left(\mathbf{y}^{\prime\prime} \right) }
+                        \cdot \pi(\mathbf{x}^{(t)})
+                \right)
+        \right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)}
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot \left(
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+                + \log \left(
+                        \frac{1}{\int d \mathbf{y}^{\prime\prime} \pi\left(\mathbf{y}^{\prime\prime} \right) }
+                \right)
+                + \log \left(
+                        \pi(\mathbf{x}^{(t)})
+                \right)
+        \right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)}
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot \left(
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+                + \log \left(
+                        \pi(\mathbf{x}^{(t)})
+                \right)
+        \right)
+        \hspace{1cm} (\int d \mathbf{y}^{\prime\prime} \pi\left(\mathbf{y}^{\prime\prime} \right) = 1 という仮定が入っている) \\
+\end{align*}
+$$
+
+次回(3/30)
+- Appendix Aの各定理をまとめる。(28) - (36)
+        - ↑(28)が途中 右辺($H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})$)を括り出して、logを展開する。積分範囲を変える
+- (次回:Appendix B. で、上記の計算を進める)
+  - $H_{q}(X^{(T)})$ を、定義に合わせる
+  - すると、Appendix B. (43) に着地
+  - Appendix A.を読む
+     - ↑ Lの下限が 2.4 (14) の形にすることで示せる
+- 関数解析に踏み込むとしたら
+    - [形状最適化問題](https://www.morikita.co.jp/books/mid/061461)
+- vscodeでTexで書く方法に移植する
+- ↑βが小さい時にforwardとreverseが等しくなる、はよくわからないので保留
+- モデルの実装(on github)も見てみる [https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py)
+- 一旦読み終えてみてから、参考文献見てみる？
+        - ガウス過程云々
 
 
 ## 2.2. Reverse Trajectory
@@ -846,20 +981,6 @@ $ (5) <- (論文14と対応させたい)
 
 
 
-
-(2/22)
-- (次回:Appendix B. で、上記の計算を進める)
-  - $H_{q}(X^{(T)})$ を、定義に合わせる
-  - すると、Appendix B. (43) に着地
-  - Appendix A.を読む
-     - ↑ Lの下限が 2.4 (14) の形にすることで示せる
-- 関数解析に踏み込むとしたら
-    - [形状最適化問題](https://www.morikita.co.jp/books/mid/061461)
-- vscodeでTexで書く方法に移植する
-- ↑βが小さい時にforwardとreverseが等しくなる、はよくわからないので保留
-- モデルの実装(on github)も見てみる [https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py)
-- 一旦読み終えてみてから、参考文献見てみる？
-        - ガウス過程云々
 
 
 ## 2.5. Multiplying Distributions, and Computing Posteriors
