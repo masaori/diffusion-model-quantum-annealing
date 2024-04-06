@@ -190,7 +190,7 @@ $\mu: \mathfrak{B}(\mathbb{R^{d}}) \rightarrow \mathbb{R}$ を Lebegue Measure �
 ### Radon-Nikodymの定理
 $X$: 確率変数
 
-Lebegue の $P_{X_{abs}}$ について、以下を満たす Integrable な関数 $p_{X_{abs}}: \mathbb{R} \rightarrow \mathbb{R}_{\geq 0}$ が存在する。
+Lebegue の $P_{X_{abs}}$ について、以下を満たす Integrable な関数 $p_{X_{abs}}: \mathbb{R} \to \mathbb{R}_{\geq 0}$ が存在する。
 $$
 \int_{-\infty}^x p_{X_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{X_{abs}}(X \leq x)
 $$
@@ -254,6 +254,12 @@ $(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P_{X})$: 上記から定まる確率空�
 $$
 H^{P}_{entropy}(X) := H_{entropy}(p_{X_{abs}}) := -\int_{x \in X} dx \ p_{X_{abs}}(x) \log p_{X_{abs}}(x)
 $$
+
+##### エントロピーの値の範囲
+$$
+0 \leq H_{entropy}(p_{X_{abs}}) 
+$$
+
 
 
 ### 結合エントロピー (joint entropy)
@@ -693,12 +699,14 @@ $$
 ### マルコフ拡散カーネル ([Markov kernel](https://en.wikipedia.org/wiki/Markov_kernel))
 
 
-$T_{\pi}: \mathbb{R}^{n}\times\mathbb{R}^{n}\times\mathbb{R}\to\mathbb{R},\ \left(\mathbf{y} , \mathbf{y}^{\prime} , \beta\right) \mapsto T_\pi\left(\mathbf{y} \mid \mathbf{y}^{\prime} ; \beta\right)$　($\beta$は、拡散率)
+$T_{\pi}: \mathbb{R}^{n}\times\mathbb{R}^{n}\times\mathbb{R}\to\mathbb{R}_{\geq 0},\ \left(\mathbf{y} , \mathbf{y}^{\prime} , \beta\right) \mapsto \left(\mathbf{y} \mid \mathbf{y}^{\prime} ; \beta\right)$　($\beta$は、拡散率)
 
 
 $\pi: \mathbb{R}^{n}\to\mathbb{R}$ は、以下の第二種フレドホルム積分方程式の解
 $$
-\begin{aligned}\pi(\mathbf{y}) & =\int d \mathbf{y}^{\prime} T_\pi\left(\mathbf{y} \mid \mathbf{y}^{\prime} ; \beta\right) \pi\left(\mathbf{y}^{\prime}\right)\end{aligned}
+\begin{aligned}
+\pi(\mathbf{y}) & =\int d \mathbf{y}^{\prime} T_\pi\left(\mathbf{y} \mid \mathbf{y}^{\prime} ; \beta\right) \pi\left(\mathbf{y}^{\prime}\right)
+\end{aligned}
 $$
 
 - [https://ja.wikipedia.org/wiki/フレドホルム積分方程式](https://ja.wikipedia.org/wiki/%E3%83%95%E3%83%AC%E3%83%89%E3%83%9B%E3%83%AB%E3%83%A0%E7%A9%8D%E5%88%86%E6%96%B9%E7%A8%8B%E5%BC%8F)
@@ -737,7 +745,8 @@ $q^{(T)}_{X_{abs}}:X^{(T)}\to\mathbb{R},\ q^{(T)}_{X_{abs}}(\mathbf{x}^{(T)}) :=
 
 ##### 論文との対応
 
-$H_{q}(\mathbf{x}^{(t)}) = H_{entropy}(q^{(0\dots t)}_{X_{abs}})$
+- $H_{q}(\mathbf{x}^{(t)}) = H_{entropy}(q^{(0\dots t)}_{X_{abs}})$
+- $q\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)}\right) = T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)$
 
 #### 定理
 ##### $H_{entropy}(q^{(0\dots t)}_{X_{abs}}) \geq H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})$ (論文(28))
@@ -804,7 +813,21 @@ T_\pi\left(\mathbf{y} \mid \mathbf{y}^{\prime} ; \beta\right) :=
                 \frac{1}{\int d \mathbf{y}^{\prime\prime} \pi\left(\mathbf{y}^{\prime\prime} \right) }
         \right) \cdot \pi(\mathbf{y})
 $$
-とおいてみると、
+とおいてみる。
+
+---
+$∵$
+$\pi$の定義のフレドホルム方程式において、$T_\pi\left(\mathbf{y} \mid \mathbf{y}^{\prime} ; \beta\right) = f(\mathbf{y})g(\mathbf{y}^{\prime})$と置けることを仮定すると
+$$
+\begin{align*}
+\pi(\mathbf{y}) &= \int d \mathbf{y}^{\prime} T_\pi\left(\mathbf{y} \mid \mathbf{y}^{\prime} ; \beta\right) \pi\left(\mathbf{y}^{\prime}\right) \\
+\pi(\mathbf{y}) &= \int d \mathbf{y}^{\prime} f(\mathbf{y})g(\mathbf{y}^{\prime}) \pi\left(\mathbf{y}^{\prime}\right) \\
+\pi(\mathbf{y}) &= f(\mathbf{y}) \int d \mathbf{y}^{\prime} g(\mathbf{y}^{\prime}) \pi\left(\mathbf{y}^{\prime}\right) \\
+\end{align*}
+$$
+$\int d \mathbf{y}^{\prime} g(\mathbf{y}^{\prime}) \pi\left(\mathbf{y}^{\prime}\right)$は定数であるので、$f(\mathbf{y})$は$\pi(\mathbf{y})$の定数倍に限り、一旦$g(\mathbf{y}^{\prime})$を一番簡単なものとして定数関数であることを仮定する。
+
+---
 $$
 \begin{align*}
 &= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)}
@@ -841,6 +864,34 @@ $$
                         \pi(\mathbf{x}^{(t)})
                 \right)
         \right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}}
+\end{align*}
+$$
+
+$$
+\begin{align*}
+(右辺) &= H_{entropy}(q^{(0\dots t-1)}_{X_{abs}}) \\
+&= -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{t=0}^{t-1} X^{(t)}} d\mathbf{x}^{(0\dots t-1)} q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot \log \left( q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \right)
+\end{align*}
+$$
+であるから、
+$$
+\begin{align*}
+
+(左辺) - (右辺) &= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)}
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot \left(
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+                + \log \left(
+                        \frac{1}{\int d \mathbf{y}^{\prime\prime} \pi\left(\mathbf{y}^{\prime\prime} \right) }
+                \right)
+                + \log \left(
+                        \pi(\mathbf{x}^{(t)})
+                \right)
+        \right)
+        + \int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{t=0}^{t-1} X^{(t)}} d\mathbf{x}^{(0\dots t-1)} q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot \log \left( q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \right) \\
 &= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{t=0}^{t} X^{(t)}} d\mathbf{x}^{(0\dots t)}
         q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
         \cdot \left(
@@ -848,14 +899,18 @@ $$
                         q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
                 \right)
                 + \log \left(
+                        \frac{1}{\int d \mathbf{y}^{\prime\prime} \pi\left(\mathbf{y}^{\prime\prime} \right) }
+                \right)
+                + \log \left(
                         \pi(\mathbf{x}^{(t)})
                 \right)
-        \right)
-        \hspace{1cm} (\int d \mathbf{y}^{\prime\prime} \pi\left(\mathbf{y}^{\prime\prime} \right) = 1 という仮定が入っている) \\
+        \right) \\
 \end{align*}
 $$
 
-次回(3/30)
+次回(4/6)
+- 正規分布の指揮をwikipediaで確認して、Appendixの具体的な$\pi$と$T_{\pi}$を使って、フレドホルム方程式が成り立つかを確認する
+        - とりあえず1次元とかで
 - Appendix Aの各定理をまとめる。(28) - (36)
         - ↑(28)が途中 右辺($H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})$)を括り出して、logを展開する。積分範囲を変える
 - (次回:Appendix B. で、上記の計算を進める)
@@ -884,6 +939,10 @@ $p^{(i\dots T)}_{X_{abs}}:\prod_{t=i}^{T} X^{(t)}\to\mathbb{R}$
 $$
 p^{(i\dots T)}_{X_{abs}}(\mathbf{x}^{(i\dots T)}) := p^{(T)}_{X_{abs}}\left(\mathbf{x}^{(T)}\right) \prod_{t=1}^T T_{\pi}\left(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)};\beta_{t}\right)
 $$
+
+##### 論文との対応
+
+- $p\left(\mathbf{x}^{(j-1)} \mid \mathbf{x}^{(j)}\right) = T_{\pi}\left(\mathbf{x}^{(j-1)} \mid \mathbf{x}^{(j)};\beta_{j}\right)$
 
 
 ## 2.3. Model Probability
