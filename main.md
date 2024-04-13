@@ -711,6 +711,378 @@ $$
 
 - [https://ja.wikipedia.org/wiki/フレドホルム積分方程式](https://ja.wikipedia.org/wiki/%E3%83%95%E3%83%AC%E3%83%89%E3%83%9B%E3%83%AB%E3%83%A0%E7%A9%8D%E5%88%86%E6%96%B9%E7%A8%8B%E5%BC%8F)
 
+##### 正規分布を使った$\pi$と$T_{\pi}$がフレドホルム積分方程式の解であること
+一次元でチェックする
+
+$\pi(y) := \mathcal{N}(y, 0, 1) = \frac{1}{\sqrt{2 \pi}} \exp \left(-\frac{y^2}{2}\right)$
+
+$T_{\pi}(y \mid y^{\prime} ; \beta)
+        := \mathcal{N}(y, y^{\prime}\sqrt{1-\beta}, \beta)
+        = \frac{1}{\sqrt{2 \pi \beta^{2}}} \exp \left(-\frac{(y-y^{\prime}\sqrt{1-\beta})^2}{2\beta^{2}}\right)
+$
+
+とおく
+
+$\pi(y) = \int dy^{\prime} T_{\pi}(y \mid y^{\prime}; \beta) \pi(y^{\prime})$ が、上記に対して成り立つことを確認する
+$$
+\begin{aligned}
+(右辺) &= \int dy^{\prime} \frac{1}{\sqrt{2 \pi \beta^{2}}} \exp \left(-\frac{(y-y^{\prime}\sqrt{1-\beta})^2}{2\beta^{2}}\right) \frac{1}{\sqrt{2 \pi}} \exp \left(-\frac{y^{\prime 2}}{2}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime} \exp \left(-\frac{(y-y^{\prime}\sqrt{1-\beta})^2}{2\beta^{2}} - \frac{y^{\prime 2}}{2}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime} \exp \left(-\frac{(y-y^{\prime}\sqrt{1-\beta})^2}{2\beta^{2}} - \frac{y^{\prime 2} \beta^{2}}{2 \beta^{2}}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime} \exp \left(- \frac{y^{\prime 2} \beta^{2}}{2 \beta^{2}} -\frac{(-y^{\prime}\sqrt{1-\beta} + y)^2}{2\beta^{2}}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime} \exp \left(- \frac{y^{\prime 2} \beta^{2} + (-y^{\prime}\sqrt{1-\beta} + y)^{2}}{2 \beta^{2}}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime} \exp \left(- \frac{y^{\prime 2} \beta^{2} + (1-\beta)y^{\prime 2} - 2\sqrt{1-\beta}yy^{\prime} + y^{2}}{2 \beta^{2}}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime} \exp \left(- \frac{y^{\prime 2} (1-\beta+\beta^{2}) - 2\sqrt{1-\beta}yy^{\prime} + y^{2}}{2 \beta^{2}}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime} \exp \left(- \frac{(1-\beta+\beta^{2}) \left( y^{\prime 2} - \frac{2\sqrt{1-\beta}yy^{\prime}}{1-\beta+\beta^{2}} \right) + y^{2}}{2 \beta^{2}}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (
+                                1-\beta+\beta^{2}
+                        ) \left(
+                                y^{\prime 2}
+                                - \frac{
+                                        2\sqrt{1-\beta}yy^{\prime}}{1-\beta+\beta^{2}
+                                }
+                                + \frac{
+                                        (1-\beta)y^{2}}{(1-\beta+\beta^{2})^{2}
+                                }
+                                - \frac{
+                                        (1-\beta)y^{2}}{(1-\beta+\beta^{2})^{2}
+                                }
+                        \right) + y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (
+                                1-\beta+\beta^{2}
+                        ) \left(
+                               (y^{\prime} - \frac{\sqrt{1-\beta}y}{1-\beta+\beta^{2}})^{2}
+                                - \frac{
+                                        (1-\beta)y^{2}}{(1-\beta+\beta^{2})^{2}
+                                }
+                        \right) + y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (1-\beta+\beta^{2})(y^{\prime} - \frac{\sqrt{1-\beta}y}{1-\beta+\beta^{2}})^{2}
+                        - (1-\beta+\beta^{2}) \frac{
+                                (1-\beta)y^{2}}{(1-\beta+\beta^{2})^{2}
+                        }
+                        + y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (1-\beta+\beta^{2})(y^{\prime} - \frac{\sqrt{1-\beta}y}{1-\beta+\beta^{2}})^{2}
+                        - \frac{
+                                (1-\beta)y^{2}}{1-\beta+\beta^{2}
+                        }
+                        + y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (1-\beta+\beta^{2})(y^{\prime} - \frac{\sqrt{1-\beta}y}{1-\beta+\beta^{2}})^{2}
+                        - \frac{
+                                (1-\beta) - (1-\beta+\beta^{2})
+                        }{
+                                1-\beta+\beta^{2}
+                        } y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (1-\beta+\beta^{2})(y^{\prime} - \frac{\sqrt{1-\beta}y}{1-\beta+\beta^{2}})^{2}
+                        + \frac{
+                                \beta^{2}
+                        }{
+                                1-\beta+\beta^{2}
+                        } y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta}
+        \exp \left(
+                - \frac{
+                        \frac{
+                                \beta^{2}
+                        }{
+                                1-\beta+\beta^{2}
+                        } y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right)
+        \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (1-\beta+\beta^{2})(y^{\prime} - \frac{\sqrt{1-\beta}y}{1-\beta+\beta^{2}})^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta}
+        \exp \left(
+                - \frac{
+                        \frac{
+                                \beta^{2}
+                        }{
+                                1-\beta+\beta^{2}
+                        } y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right)
+        \sqrt{
+                \frac{
+                        \pi
+                }{
+                        \frac{
+                                1-\beta+\beta^{2}
+                        }{
+                                2 \beta^{2}
+                        }
+                }
+        }
+        \\
+&= \frac{1}{2 \pi \beta}
+        \sqrt{
+                \frac{
+                        2 \pi \beta^{2}
+                }{
+                        1-\beta+\beta^{2}
+                }
+        }
+        \exp \left(
+                - \frac{
+                        y^{2}
+                }{
+                        2 (1-\beta+\beta^{2})
+                }
+        \right)
+        \\
+&= \frac{1}{\sqrt{2 \pi (1-\beta+\beta^{2})}}
+        \exp \left(
+                - \frac{
+                        y^{2}
+                }{
+                        2 (1-\beta+\beta^{2})
+                }
+        \right)
+        \\
+&= \mathcal{N}(y, 0, \sqrt{1-\beta+\beta^{2}})
+
+\end{aligned}
+$$
+
+あわんかったので、$T_{\pi}(y \mid y^{\prime} ; \beta):= \mathcal{N}(y, m y^{\prime}, \beta)$で計算して、噛み合う$m$を見つける。
+
+$\pi(y) := \mathcal{N}(y, 0, 1) = \frac{1}{\sqrt{2 \pi}} \exp \left(-\frac{y^2}{2}\right)$
+
+$T_{\pi}(y \mid y^{\prime} ; \beta)
+        := \mathcal{N}(y, m y^{\prime}, \beta)
+        = \frac{1}{\sqrt{2 \pi \beta^{2}}} \exp \left(-\frac{(y-m y^{\prime})^2}{2\beta^{2}}\right)
+$
+
+とおく
+
+$$
+\begin{aligned}
+(右辺) &= \int dy^{\prime} \frac{1}{\sqrt{2 \pi \beta^{2}}} \exp \left(-\frac{(y-m y^{\prime})^2}{2\beta^{2}}\right) \frac{1}{\sqrt{2 \pi}} \exp \left(-\frac{y^{\prime 2}}{2}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime} \exp \left(- \frac{y^{\prime 2} \beta^{2} + m^{2} y^{\prime 2} - 2myy^{\prime} + y^{2}}{2 \beta^{2}}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime} \exp \left(- \frac{(\beta^{2} + m^{2}) y^{\prime 2} - 2myy^{\prime} + y^{2}}{2 \beta^{2}}\right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (\beta^{2} + m^{2}) \left(
+                                y^{\prime 2}
+                                - \frac{
+                                        2myy^{\prime}
+                                }{
+                                        \beta^{2} + m^{2}
+                                }
+                        \right)
+                        + y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (\beta^{2} + m^{2}) \left(
+                                y^{\prime 2}
+                                - \frac{
+                                        2myy^{\prime}
+                                }{
+                                        \beta^{2} + m^{2}
+                                }
+                                + \frac{
+                                        m^{2} y^{2}
+                                }{
+                                        (\beta^{2} + m^{2})^{2}
+                                }
+                                - \frac{
+                                        m^{2} y^{2}
+                                }{
+                                        (\beta^{2} + m^{2})^{2}
+                                }
+                        \right)
+                        + y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (\beta^{2} + m^{2}) \left(
+                                \left( y^{\prime} - \frac{my}{\beta^{2} + m^{2}} \right)^{2}
+                                - \frac{
+                                        m^{2} y^{2}
+                                }{
+                                        (\beta^{2} + m^{2})^{2}
+                                }
+                        \right)
+                        + y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta} \int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (\beta^{2} + m^{2}) \left( y^{\prime} - \frac{my}{\beta^{2} + m^{2}} \right)^{2}
+                        - \frac{
+                                m^{2} y^{2}
+                        }{
+                                \beta^{2} + m^{2}
+                        }
+                        + y^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta}
+\exp \left(
+        - \frac{
+                \frac{
+                        m^{2} y^{2}
+                }{
+                        \beta^{2} + m^{2}
+                }
+                - y^{2}
+        }{
+                2 \beta^{2}
+        }
+\right)
+\int dy^{\prime}
+        \exp \left(
+                - \frac{
+                        (\beta^{2} + m^{2}) \left( y^{\prime} - \frac{my}{\beta^{2} + m^{2}} \right)^{2}
+                }{
+                        2 \beta^{2}
+                }
+        \right) \\
+&= \frac{1}{2 \pi \beta}
+\exp \left(
+        - \frac{
+                \frac{
+                        m^{2} y^{2} - (\beta^{2} + m^{2}) y^{2}
+                }{
+                        \beta^{2} + m^{2}
+                }
+        }{
+                2 \beta^{2}
+        }
+\right)
+\sqrt{
+        \frac{
+                \pi 
+        }{
+
+                \left(\frac{
+                        \beta^{2} + m^{2}
+                }{
+                        2 \beta^{2}
+                }\right)
+        }
+}
+\\
+&= \frac{1}{2 \pi \beta}
+\sqrt{
+        \frac{
+                2 \pi \beta^{2}
+        }{
+                \beta^{2} + m^{2}
+        }
+}
+\exp \left(
+        - \frac{
+                \frac{
+                        \beta^{2} y^{2}
+                }{
+                        \beta^{2} + m^{2}
+                }
+        }{
+                2 \beta^{2}
+        }
+\right) \\
+&= \frac{1}{\sqrt{2 \pi (\beta^{2} + m^{2})}}
+\exp \left(
+        - \frac{
+                y^{2}
+        }{
+                2 (\beta^{2} + m^{2})
+        }
+\right) \\
+&= \mathcal{N}(y, 0, \sqrt{\beta^{2} + m^{2}}) (*)
+
+
+\end{aligned}
+$$
+
+次回(4/13)
+- 正規分布の指揮をwikipediaで確認して、Appendixの具体的な$\pi$と$T_{\pi}$を使って、フレドホルム方程式が成り立つかを確認する
+  - やってみたら合わなかったけど(*)からmがもとまりそうなので、修正完了
+  - $\sqrt{\beta^2+m^2} = 1$ より、 $m = \sqrt{1-\beta^2}$
+  - ↓にすすむ
+- Appendix Aの各定理をまとめる。(28) - (36)
+  - ↑(28)が途中 右辺($H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})$)を括り出して、logを展開する。積分範囲を変える
+- (次回:Appendix B. で、上記の計算を進める)
+  - $H_{q}(X^{(T)})$ を、定義に合わせる
+  - すると、Appendix B. (43) に着地
+  - Appendix A.を読む
+     - ↑ Lの下限が 2.4 (14) の形にすることで示せる
+- 関数解析に踏み込むとしたら
+    - [形状最適化問題](https://www.morikita.co.jp/books/mid/061461)
+- vscodeでTexで書く方法に移植する
+- ↑βが小さい時にforwardとreverseが等しくなる、はよくわからないので保留
+- モデルの実装(on github)も見てみる [https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py)
+- 一旦読み終えてみてから、参考文献見てみる？
+        - ガウス過程云々
+
+---
+
 $0 \leq i \leq Tに対して \ X^{(i)} = \mathbb{R}^{n}$
 
 
@@ -908,23 +1280,6 @@ $$
 \end{align*}
 $$
 
-次回(4/6)
-- 正規分布の指揮をwikipediaで確認して、Appendixの具体的な$\pi$と$T_{\pi}$を使って、フレドホルム方程式が成り立つかを確認する
-        - とりあえず1次元とかで
-- Appendix Aの各定理をまとめる。(28) - (36)
-        - ↑(28)が途中 右辺($H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})$)を括り出して、logを展開する。積分範囲を変える
-- (次回:Appendix B. で、上記の計算を進める)
-  - $H_{q}(X^{(T)})$ を、定義に合わせる
-  - すると、Appendix B. (43) に着地
-  - Appendix A.を読む
-     - ↑ Lの下限が 2.4 (14) の形にすることで示せる
-- 関数解析に踏み込むとしたら
-    - [形状最適化問題](https://www.morikita.co.jp/books/mid/061461)
-- vscodeでTexで書く方法に移植する
-- ↑βが小さい時にforwardとreverseが等しくなる、はよくわからないので保留
-- モデルの実装(on github)も見てみる [https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py](https://github.com/Sohl-Dickstein/Diffusion-Probabilistic-Models/blob/master/model.py)
-- 一旦読み終えてみてから、参考文献見てみる？
-        - ガウス過程云々
 
 
 ## 2.2. Reverse Trajectory
