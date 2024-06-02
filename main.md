@@ -325,6 +325,8 @@ H^{P}_{condi}(Y|X) := H_{condi}(p^{joint}_{(Y, X)_{abs}}) &:= -\int_{x \in X, y 
 \end{align*}
 $$
 
+$Claim$
+
 以下が成り立つ
 $$
 H^{P}_{condi}\left(Y \mid X\right)=H^{P}_{condi}\left(X \mid Y\right)+H^{P}_{entropy}\left(Y\right)-H^{P}_{entropy}\left(X\right)
@@ -380,34 +382,183 @@ $$
         p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(\log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)\right)
 \right)
 + \int_{x \in X, y \in Y} dxdy \ \left(
-        p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(\log \left(p_{Y_{abs}}(y)\right)\right)
+        p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(\log \left(p_{X_{abs}}(x)\right)\right)
 \right) \\
 &= -\int_{x \in X, y \in Y} dxdy \ \left(
         p^{joint}_{(X, Y)_{abs}}(x, y) \cdot \left(\log \left(\frac{
                 p^{joint}_{(X, Y)_{abs}}(x, y)
         }{
-                p_{Y_{abs}}(y)
+                p_{X_{abs}}(x)
         }\right)\right)
 \right)
+&= -\int_{x \in X, y \in Y} dxdy \ \left(
+        p^{joint}_{(Y, X)_{abs}}(y, x) \cdot \left(\log \left(\frac{
+                p^{joint}_{(Y, X)_{abs}}(y, x)
+        }{
+                p_{X_{abs}}(x)
+        }\right)\right)
+\right)
+
 \\
 &= H^{P}_{condi}\left(Y \mid X\right) \hspace{40pt} (論文(27))
 
 \end{align*}
 $$
+$Q.E.D.$
 
+$Claim$
 
+以下が成り立つ、
+$$
+H^{P}_{condi}\left(X \mid Y\right) = H^{P}_{join}\left(X, Y\right) - H^{P}_{entropy}\left(Y\right)
+$$
+$Proof.$
+$$
+\begin{align*}
+(右辺) &= H^{P}_{join}\left(X, Y\right) - H^{P}_{entropy}\left(Y\right) \\
+&=
+-\int_{x \in X, y \in Y} dxdy \
+        p^{joint}_{(X, Y)_{abs}}(x, y) \log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)
+- \left(
+        -\int_{y \in Y} dy \
+                p_{Y_{abs}}(y) \log p_{Y_{abs}}(y)
+\right) \\
+&=
+-\int_{x \in X, y \in Y} dxdy \
+        p^{joint}_{(X, Y)_{abs}}(x, y) \log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)
+- \left(
+        - \int_{x \in X, y \in Y} dxdy \
+                p^{joint}_{(X, Y)_{abs}}(x, y) \log p_{Y_{abs}}(y)
+\right) \\
+&=
+-\int_{x \in X, y \in Y} dxdy \
+        p^{joint}_{(X, Y)_{abs}}(x, y) \left(
+                \log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)
+                -
+                \log p_{Y_{abs}}(y)
+        \right) \\
+&=
+-\int_{x \in X, y \in Y} dxdy \
+        p^{joint}_{(X, Y)_{abs}}(x, y) \log \left(\frac{
+                p^{joint}_{(X, Y)_{abs}}(x, y)
+        }{
+                p_{Y_{abs}}(y)
+        }\right) \\
+&= H^{P}_{condi}\left(X \mid Y\right)
+\end{align*}
+$$
 ### 相互情報量 (Mutual information)
 
-確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
-確率変数$X, Y$について、
+確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$, 確率変数$X, Y$について、
 
 
 $$
 \begin{align*}
-I(Y;X) &:= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \left(\frac{p^{joint}_{(Y, X)_{abs}}(y, x)}{p_{Y_{abs}}(y)p_{X_{abs}}(x)}\right)     
+I(Y;X) &:= \int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \left(\frac{p^{joint}_{(Y, X)_{abs}}(y, x)}{p_{Y_{abs}}(y)p_{X_{abs}}(x)}\right)     
 \end{align*}
 $$
 
+(ざっくりとは、X,Yが独立でない場合の「情報量の重なり」みたいなもの)
+
+$Claim$
+
+相互情報量と結合エントロピーについて以下が成り立つ、
+
+確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$,
+確率変数$X, Y$について、
+$$
+H^{P}_{joint}\left(X, Y\right)=H^{P}_{entropy}\left(X\right)+H^{P}_{entropy}\left(Y\right)-I\left(Y;X\right)
+$$
+$proof.$
+$$
+\begin{align*}
+(右辺) &= H^{P}_{entropy}\left(X\right)+H^{P}_{entropy}\left(Y\right)-I\left(Y;X\right) \\
+&=
+-\int_{x \in X} dx \ 
+        p_{X_{abs}}(x) \log \left(p_{X_{abs}}(x)\right)
+-\int_{y \in Y} dy \ 
+        p_{Y_{abs}}(y) \log \left(p_{Y_{abs}}(y)\right)
++\int_{x \in X, y \in Y} dxdy \ 
+        p^{joint}_{(X, Y)_{abs}}(x, y) \log \left(\frac{p^{joint}_{(X, Y)_{abs}}(x, y)}{p_{Y_{abs}}(y)p_{X_{abs}}(x)}\right) \\
+&=
+-\int_{x \in X} dxdy \ 
+        p_{X_{abs}}(x) \log \left(p_{X_{abs}}(x)\right)
+-\int_{y \in Y} dxdy \ 
+        p_{Y_{abs}}(y) \log \left(p_{Y_{abs}}(y)\right)
+-\int_{x \in X, y \in Y} dxdy \ 
+        p^{joint}_{(X, Y)_{abs}}(x, y) \left(
+                \log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)
+                -
+                \log \left(p_{Y_{abs}}(y)\right)
+                -
+                \log \left(p_{X_{abs}}(x)\right)
+        \right) \\
+&=
+\cancel{
+        -\int_{x \in X} dxdy \ 
+                p_{X_{abs}}(x) \log \left(p_{X_{abs}}(x)\right)
+}
++\underbrace{
+        \int_{x \in X, y \in Y} dxdy \ 
+                p^{joint}_{(X, Y)_{abs}}(x, y) \log \left(p_{X_{abs}}(x)\right)
+}_{
+        \cancel{
+                \int_{x \in X} dxdy \ 
+                        p_{X_{abs}}(x) \log \left(p_{X_{abs}}(x)\right)
+        }
+}
+\cancel{
+        -\int_{y \in Y} dxdy \ 
+                p_{Y_{abs}}(y) \log \left(p_{Y_{abs}}(y)\right)
+}
++\underbrace{
+        \int_{x \in X, y \in Y} dxdy \ 
+                p^{joint}_{(X, Y)_{abs}}(x, y) \log \left(p_{Y_{abs}}(y)\right)
+}_{
+        \cancel{
+                \int_{y \in Y} dxdy \ 
+                        p_{Y_{abs}}(y) \log \left(p_{Y_{abs}}(y)\right)
+        }
+}
+-\int_{x \in X, y \in Y} dxdy \ 
+        p^{joint}_{(X, Y)_{abs}}(x, y) \left(
+                \log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)
+        \right) \\
+&=
+-\int_{x \in X, y \in Y} dxdy \ 
+        p^{joint}_{(X, Y)_{abs}}(x, y) \left(
+                \log \left(p^{joint}_{(X, Y)_{abs}}(x, y)\right)
+        \right) \\
+&= H^{P}_{joint}\left(X, Y\right)
+\end{align*}
+$$
+$Q.E.D.$
+
+$Claim$
+
+$p^{joint}_{(X, Y)_{abs}}(x, y) \leq p_{X_{abs}}(x)$ のとき以下が成り立つ、
+$$
+H^{P}_{joint}\left(X, Y\right) - H^{P}_{entropy}\left(X\right) \geq 0
+$$
+$Proof.$
+$$
+\begin{align*}
+H^{P}_{joint}\left(X, Y\right) - H^{P}_{entropy}\left(X\right) &= H^{P}_{condi}\left(Y \mid X\right) \ (\because 上記のclaim) \\
+&=
+-\int_{x \in X, y \in Y} dxdy \ 
+        p^{joint}_{(X, Y)_{abs}}(x, y) \log \left(\frac{
+                p^{joint}_{(X, Y)_{abs}}(x, y)
+        }{
+                p_{X_{abs}}(x)
+        }\right) \\
+&\geq 0 \ (\because \frac{
+                p^{joint}_{(X, Y)_{abs}}(x, y)
+        }{
+                p_{X_{abs}}(x)
+        } \leq 1)
+\end{align*}
+$$
+$Q.E.D.$
 
 ---
 ↓２つの確率測度(確率分布)$P, Q$について述べている
@@ -1082,7 +1233,9 @@ $T_{\pi}(y \mid y^{\prime} ; \beta)
 $
 
 
-次回(5/4)
+次回(6/1)
+- 連続だと思って計算しているのが、本当は離散じゃないと成り立たないみたいな状況を定量化できると面白いのでは？
+   - 松尾研で質問してみる @浅香先生
 - Appendix Aの各定理をまとめる。(28) - (36)
   - (28)を↑の積分チェックして完了
   - $T_{\pi}$になんか条件があるかも (Tpi自体確率密度関数みたいな) ($p(0) = \pi$ とか)
@@ -1818,3 +1971,4 @@ $ (5) <- (論文14と対応させたい)
 - 量子コンピュータの種類
         - 量子アニーリング
         - 量子ゲート
+
