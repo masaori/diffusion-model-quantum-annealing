@@ -1235,7 +1235,7 @@ $
 
 次回(6/1)
 - 連続だと思って計算しているのが、本当は離散じゃないと成り立たないみたいな状況を定量化できると面白いのでは？
-   - 松尾研で質問してみる @浅香先生
+   - 松尾研で質問してみる @浅香先生 (6/10)
 - Appendix Aの各定理をまとめる。(28) - (36)
   - (28)を↑の積分チェックして完了
   - $T_{\pi}$になんか条件があるかも (Tpi自体確率密度関数みたいな) ($p(0) = \pi$ とか)
@@ -1244,6 +1244,7 @@ $
   - すると、Appendix B. (43) に着地
   - Appendix A.を読む
      - ↑ Lの下限が 2.4 (14) の形にすることで示せる
+- [いつか] 離散で書き直してみる
 - 関数解析に踏み込むとしたら
     - [形状最適化問題](https://www.morikita.co.jp/books/mid/061461)
 - vscodeでTexで書く方法に移植する
@@ -1291,7 +1292,7 @@ $q^{(T)}_{X_{abs}}:X^{(T)}\to\mathbb{R},\ q^{(T)}_{X_{abs}}(\mathbf{x}^{(T)}) :=
 - $H_{q}(\mathbf{x}^{(t)}) = H_{entropy}(q^{(0\dots t)}_{X_{abs}})$
 - $q\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)}\right) = T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)$
 
-#### 公式
+#### 公式 (ガウス積分)
 $
 \int_{x}
         \left(
@@ -1299,13 +1300,31 @@ $
                 \cdot \exp \left(
                         -\gamma \cdot (x-\beta)^2
                 \right)
-                \cdot \left(
+        \right)
+dx
+= \alpha \cdot \sqrt{\frac{\pi}{\gamma}}
+$
+
+#### 公式 (ガウス積分)
+$
+\int_{x}
+        \left(
+                \alpha
+                \cdot
+                \left(
+                        -\gamma \cdot (x-\beta)^2
+                \right)
+                \cdot
+                \exp \left(
                         -\gamma \cdot (x-\beta)^2
                 \right)
         \right)
-        dx = - \frac{\sqrt{\pi \gamma}\cdot \alpha}{2}
+dx
+= \alpha \cdot \sqrt{\frac{\pi}{2 \gamma}}
 $
+
 ###### 導出
+(次回6/8)この導出からの不等式の証明
 $$
 \begin{aligned}
 y &:= \sqrt{\gamma}(x - \beta) とおくと、\\
@@ -1328,173 +1347,7 @@ dy = \sqrt{\gamma}dx より\\
 $$
 
 #### 定理
-##### $H_{entropy}(q^{(0\dots t)}_{X_{abs}}) \geq H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})$ (論文(28))
-###### proof.
-
-###### 作業
-$$
-q^{(0\dots t)}_{X_{abs}}(\mathbf{x}^{(0\dots t)})
-        = q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^t 
-                \left(
-                        T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
-                \right)
-$$
-であるから、
-
-$$
-\begin{align*}
-(右辺) = H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})
-= -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)} q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot \log \left( q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \right) \\
-\end{align*}
-$$
-
-$$
-\begin{align*}
-(左辺) = H_{entropy}(q^{(0\dots t)}_{X_{abs}}) &= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)} q^{(0\dots t)}_{X_{abs}}(\mathbf{x}^{(0\dots t)}) \cdot \log \left( q^{(0\dots t)}_{X_{abs}}(\mathbf{x}^{(0\dots t)}) \right) \\
-&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)} \ 
-        q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^t                 
-                \left(
-                        T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
-                \right)
-                 \cdot \log \left(
-                        q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^t 
-                        \left(
-                                T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
-                        \right)
-                \right) \\
-&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)} 
-        q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^{t-1}                 
-                \left(
-                        T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
-                \right)
-                \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                \cdot \log \left(
-                        q^{(0)}_{X_{abs}}(\mathbf{x}^{(0)}) \prod_{j=1}^{t-1}                 
-                \left(
-                        T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)
-                \right)
-                \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                \right) \\
-&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
-        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-        \cdot \log \left(
-                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-        \right) \\
-&=  -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
-        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-        \cdot \left(
-                \log \left(
-                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-                \right)
-                + \log \left(
-                        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                \right)
-        \right) \\
-\end{align*}
-$$
-
-$$
-\begin{align*}
-(左辺) - (右辺) &=  -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
-        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-        \cdot \left(
-                \log \left(
-                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-                \right)
-                + \log \left(
-                        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                \right)
-        \right)
-        + \int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)} q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot \log \left( q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \right) \\
-&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
-\left(
-        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
-        \left(
-                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-                \cdot T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                \cdot \left(
-                        \log \left(
-                                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-                        \right)
-                        + \log \left(
-                                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                        \right)
-                \right)
-        \right)
-\right)
-+ \int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
-\left(
-        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot \log \left( q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \right)
-\right) \\
-&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
-\left(
-        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
-        \left(
-                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-                \cdot
-                \log \left(
-                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-                \right)
-                \cdot
-                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                +
-                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-                \cdot
-                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                \cdot
-                \log \left(
-                        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                \right)
-        \right)
-\right)
-+ \int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
-\left(
-        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot \log \left( q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \right)
-\right) \\
-&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
-\left(
-        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-        \cdot
-        \log \left(
-                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-        \right)
-        \cdot
-        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
-        \left(
-                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-        \right)
-        +
-        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-        \cdot
-        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
-        \left(
-                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                \cdot
-                \log \left(
-                        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
-                \right)
-        \right)
-\right)
-+ 
-\underbrace{
-\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
-\left(
-        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot \log \left( q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \right)
-\right)}_{
-        (次回 5/4) ここの積分をやり直してみて、- \log \left(
-                \frac{1}{\sqrt{2 \pi \beta_{t}^{2}}}
-        \right)
-        + \frac{
-                1
-        }{
-                4 \beta_{t}^{2}
-        }
-        になるかチェックしてみる
-} \\
-\end{align*}
-$$
-
-ここで、変数分離したいというモチベーションのもと、作業仮定としてAppendixにある具体例、
+###### $Claim$ $H_{entropy}(q^{(0\dots t)}_{X_{abs}}) \geq H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})$ (論文(28))
 $$
 T_\pi\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)} ; \beta_{t}\right) 
         := \mathcal{N}(\mathbf{x}^{(t)}, \sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)}, \beta_{t})
@@ -1509,10 +1362,430 @@ T_\pi\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)} ; \beta_{t}\right)
                 }
         \right)
 $$
-とおいてみる。
+
+とするとき、
+$$
+H_{entropy}(q^{(0\dots t)}_{X_{abs}}) \geq H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})
+$$
+
+が成り立つ。
+
+###### $Proof$
+
+$
+q^{(0\dots t)}_{X_{abs}}(\mathbf{x}^{(0\dots t)})
+        =
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+$
+であるから、
 
 $$
 \begin{align*}
+(右辺) = H_{entropy}(q^{(0\dots t-1)}_{X_{abs}})
+= -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)} q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot \log \left( q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \right) \\
+\end{align*}
+$$
+
+$$
+\begin{align*}
+(左辺) = H_{entropy}(q^{(0\dots t)}_{X_{abs}})
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
+\left( 
+        q^{(0\dots t)}_{X_{abs}}(\mathbf{x}^{(0\dots t)})
+        \cdot
+        \log \left(
+                q^{(0\dots t)}_{X_{abs}}(\mathbf{x}^{(0\dots t)}) 
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot
+        \log \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \cdot
+                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot
+        \left(
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+                +
+                \log \left(
+                        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot
+        \left(
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+        \right)
+\right)
+-\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot
+        \left(
+                \log \left(
+                        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \right)
+        \right)
+\right) \ \cdots \ (*) \\
+\end{align*}
+$$
+
+---
+項を分ける
+
+$$
+\begin{align*}
+((*) \ 第１項)
+&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
+\left(
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \cdot
+                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \cdot
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
+\left(
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \cdot
+                \log \left(
+                        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \right)
+                \cdot
+                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \log \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \right)
+        \cdot
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                
+                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \log \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \right)
+        \cdot
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                
+                \frac{1}{
+                        \sqrt{2 \pi \beta_{t}^{2}}
+                }
+                \exp \left(
+                        -\frac{
+                                (\mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)})^2
+                        }{
+                                2\beta_{t}^{2}
+                        }
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \log \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \right)
+        \cdot
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                \underbrace{
+                        \frac{1}{
+                                \sqrt{2 \pi \beta_{t}^{2}}
+                        }
+                }_{\alpha}
+                \exp \left(
+                        -\underbrace{
+                                \frac{
+                                        1
+                                }{
+                                        2\beta_{t}^{2}
+                                }
+                        }_{\gamma}
+                        \cdot
+                        \left(
+                                \mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)}
+                        \right)^2
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \log \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \right)
+        \cdot
+        \underbrace{
+                \left(
+                        \frac{1}{
+                                \sqrt{2 \pi \beta_{t}^{2}}
+                        }
+                        \cdot
+                        \sqrt{
+                                \frac{
+                                        \pi
+                                }{
+                                        \frac{
+                                                1
+                                        }{
+                                                2\beta_{t}^{2}
+                                        }
+                                }
+                        }
+                \right)
+        }_{1}
+\right) \\
+&= -\int_{\mathbf{x}^{(0 \dots t-1)} \in \prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0 \dots t-1)} 
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \log \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \right)
+\right) \\
+&= (右辺)
+\end{align*}
+$$
+
+$$
+\begin{align*}
+((*) \ 第２項)
+&= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+        \cdot
+        \left(
+                \log \left(
+                        T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
+\left(
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+                \cdot
+                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \cdot
+                \left(
+                        \log \left(
+                                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                        \right)
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                \cdot
+                \left(
+                        \log \left(
+                                T_{\pi}\left(\mathbf{x}^{(t)} \mid \mathbf{x}^{(t-1)};\beta_{t}\right)
+                        \right)
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                \frac{1}{
+                        \sqrt{2 \pi \beta_{t}^{2}}
+                }
+                \exp \left(
+                        -\frac{
+                                (\mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)})^2
+                        }{
+                                2\beta_{t}^{2}
+                        }
+                \right)
+                \cdot
+                \left(
+                        \log \left(
+                                \frac{1}{
+                                        \sqrt{2 \pi \beta_{t}^{2}}
+                                }
+                                \exp \left(
+                                        -\frac{
+                                                (\mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)})^2
+                                        }{
+                                                2\beta_{t}^{2}
+                                        }
+                                \right)
+                        \right)
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                \frac{1}{
+                        \sqrt{2 \pi \beta_{t}^{2}}
+                }
+                \exp \left(
+                        -\frac{
+                                (\mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)})^2
+                        }{
+                                2\beta_{t}^{2}
+                        }
+                \right)
+                \cdot
+                \left(
+                        \log \left(
+                                \frac{1}{
+                                        \sqrt{2 \pi \beta_{t}^{2}}
+                                }
+                        \right)
+                        +
+                        \log \left(
+                                \exp \left(
+                                        -\frac{
+                                                (\mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)})^2
+                                        }{
+                                                2\beta_{t}^{2}
+                                        }
+                                \right)
+                        \right)
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                \frac{1}{
+                        \sqrt{2 \pi \beta_{t}^{2}}
+                }
+                \exp \left(
+                        -\frac{
+                                (\mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)})^2
+                        }{
+                                2\beta_{t}^{2}
+                        }
+                \right)
+                \cdot
+                \left(
+                        \log \left(
+                                \frac{1}{
+                                        \sqrt{2 \pi \beta_{t}^{2}}
+                                }
+                        \right)
+                        +
+                        \left(
+                                -\frac{
+                                        (\mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)})^2
+                                }{
+                                        2\beta_{t}^{2}
+                                }
+                        \right)
+                \right)
+        \right)
+\right) \\
+&= -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
+        \cdot
+        \int_{\mathbf{x}^{(t)} \in X^{(t)}} d\mathbf{x}^{(t)}
+        \left(
+                \frac{1}{
+                        \sqrt{2 \pi \beta_{t}^{2}}
+                }
+                \exp \left(
+                        -\frac{
+                                (\mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)})^2
+                        }{
+                                2\beta_{t}^{2}
+                        }
+                \right)
+                \cdot
+                \left(
+                        \log \left(
+                                \frac{1}{
+                                        \sqrt{2 \pi \beta_{t}^{2}}
+                                }
+                        \right)
+                        +
+                        \left(
+                                -\frac{
+                                        (\mathbf{x}^{(t)}-\sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)})^2
+                                }{
+                                        2\beta_{t}^{2}
+                                }
+                        \right)
+                \right)
+        \right)
+\right) \\
+\end{align*}
+$$
+-----
+
+
+$$
+\begin{align*}
++ \int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}} d\mathbf{x}^{(0\dots t-1)}
+\left(
+        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \cdot \log \left( q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)}) \right)
+\right) \\
 &= -\int_{\mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots t)}
         q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
         \cdot \frac{1}{
@@ -1757,63 +2030,19 @@ $$
 
 \end{align*}
 $$
-
----
-計算
 $$
-\alpha := q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-                \cdot \frac{1}{
-                        \sqrt{2 \pi \beta_{t}^{2}}
-                } \\
-\beta = \sqrt{1 - \beta_{t}^{2}} \mathbf{x}^{(t-1)} \\
-\gamma = \frac{1}{2\beta_{t}^{2}} \\
-
-\begin{aligned}
-\int_{x}&
-        \left(
-                \alpha
-                \cdot \exp \left(
-                        -\gamma \cdot (x-\beta)^2
-                \right)
-                \cdot \left(
-                        -\gamma \cdot (x-\beta)^2
-                \right)
-        \right)
-        dx \\
-y &:= \sqrt{\gamma}(x - \beta) とおくと、\\
-dy = \sqrt{\gamma}dx より\\ 
-\int_{y}&
-        \left(
-                \alpha
-                \cdot \exp \left(
-                        -y^2
-                \right)
-                \cdot \left(
-                        -y^2
-                \right)
-        \right)
-        \sqrt{\gamma} dy \\
-&= - \sqrt{\gamma} \alpha \int_{y} y^2 \cdot \exp(-y^2) dy \\
-&= - \sqrt{\gamma} \alpha \left( \frac{\sqrt{\pi}}{2} \right) \\
-&= - \frac{\sqrt{\pi \gamma}\cdot \alpha}{2} \\
-&= - \frac{
-        \sqrt{\pi \frac{1}{2\beta_{t}^{2}}}
-        \cdot
-        q^{(0\dots t-1)}_{X_{abs}}(\mathbf{x}^{(0\dots t-1)})
-        \cdot
-        \frac{1}{
-                \sqrt{2 \pi \beta_{t}^{2}}
-        }
-}{2} \\
-&= - \frac{
-
+\begin{align*}
+- \log \left(
+        \frac{1}{\sqrt{2 \pi \beta_{t}^{2}}}
+\right)
++ \frac{
+        1
 }{
-
+        4 \beta_{t}^{2}
 }
 
-\end{aligned}
+\end{align*}
 $$
----
 
 ## 2.2. Reverse Trajectory
 
