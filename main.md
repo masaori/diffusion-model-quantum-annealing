@@ -137,8 +137,8 @@ $$
 
 ### 確率変数 (random variety)
 
-- $X: (\Omega, F)\to (\mathbb{R},\mathfrak{B}(\mathbb{R}))$
-        - $X$は、可測な、事象の全体からボレル集合族への写像である
+- $X: \Omega \to \mathbb{R}$ で、以下を満たすもの
+  - 可測である。つまり、$\forall \omega \in \mathfrak{B}(\mathbb{R}), X^{-1}(\omega) \in F$
 
 ### $X$に由来する確率測度
 確率空間$(\Omega, F, P)$と確率変数$X$について、
@@ -228,7 +228,22 @@ $$
 p^{joint}_{(X_{1}, X_{2})_{abs}}(x_{1}, x_{2})=p^{joint}_{(X_{2}, X_{1})_{abs}}(x_{2}, x_{1})
 $$
 
+### Radon-Nikodymの定理の逆
+$Claim.$
 
+$d \in \Z_{\geq 1}$に対して、確率密度関数 $p: \mathbb{R}^{d} \to \mathbb{R}_{\geq 0}$ が存在するとき、確率空間$(\mathbb{R}^{d},\mathfrak{B}(\mathbb{R}^{d}), P_{(X_{1}, \dots ,X_{d})_{abs}})$が存在する。
+
+ただし、$1 \leq i \leq d$ に対して、 $X_{i} := \text{pr}_{i}: \mathbb{R}^{d} \to \mathbb{R}$ (射影)
+
+$Proofの概要$
+
+確率空間を構成する。
+
+- $P_{(X_{1}, \dots ,X_{d})_{abs}}(X_{1} \leq x_{1} \land \dots \land X_{d} \leq x_{d})
+        := \int_{-\infty}^{x^{}_{1}} \cdots \int_{-\infty}^{x_{d}}
+                p(x^{\prime}_{1}, \dots ,x^{\prime}_{d}) dx^{\prime}_{1} \cdots dx^{\prime}_{d}$
+- $\prod_{i}(-\infty, x_{i}]$ は $\mathfrak{B}(\mathbb{R}^{d})$ の生成元
+- よって、$P_{(X_{1}, \dots ,X_{d})_{abs}}$ は $\mathfrak{B}(\mathbb{R}^{d})$ 上の確率測度
 
 ### 累積分布関数
 
@@ -264,7 +279,7 @@ $$
 
 ##### エントロピーの値の範囲
 $$
-0 \leq H_{entropy}(p_{X_{abs}}) 
+0 \leq H_{entropy}(p_{X_{abs}}) （誤り）
 $$
 
 
@@ -320,7 +335,7 @@ $$
 
 $$
 \begin{align*}
-H^{P}_{condi}(Y|X) := H_{condi}(p^{joint}_{(Y, X)_{abs}}) &:= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \left(\frac{p^{joint}_{(Y, X)_{abs}}(y, x)}{p_{X_{abs}}(x)}\right) \\
+H^{P}_{condi}(Y|X) &:= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \left(\frac{p^{joint}_{(Y, X)_{abs}}(y, x)}{p_{X_{abs}}(x)}\right) \\
 &= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \left(p^{condi}_{(Y,X)_{abs}}(y \mid x)\right) \\
 \end{align*}
 $$
@@ -1255,11 +1270,15 @@ $
 
 ---
 
+$def.$
+
 $0 \leq i \leq Tに対して \ X^{(i)} = \mathbb{R}^{n}$
 
 
 $1 \leq i \leq Tに対して \ \beta_{i} \in \mathbb{R}$ : t-1とtの間の拡散率
 
+
+$ $
 
 $\mathbf{x}^{(i\dots j)} := (\mathbf{x}^{(i)},\dots , \mathbf{x}^{(j)})\in\prod_{t=i}^{j} X^{(t)}$ と書く
 
@@ -1290,6 +1309,8 @@ $q^{(T)}_{X_{abs}}:X^{(T)}\to\mathbb{R},\ q^{(T)}_{X_{abs}}(\mathbf{x}^{(T)}) :=
 ##### 論文との対応
 
 - $H_{q}(\mathbf{x}^{(t)}) = H_{entropy}(q^{(0\dots t)}_{X_{abs}})$
+- $H_{q}(\mathbf{x}^{(t-1)} \mid \mathbf{x}^{(t)})
+        = -\int_{\mathbf{x}^{(0\dots t-1)}\in\prod_{j=0}^{t-1} X^{(j)}, \mathbf{x}^{(0\dots t)}\in\prod_{j=0}^{t} X^{(j)}} d\mathbf{x}^{(0\dots i)}dy \ p^{joint}_{(Y, X)_{abs}}(y, \mathbf{x}^{(0\dots i)}) \log \left(p^{condi}_{(Y,X)_{abs}}(y \mid \mathbf{x}^{(0\dots i)})\right)$ 
 - $q\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)}\right) = T_{\pi}\left(\mathbf{x}^{(j)} \mid \mathbf{x}^{(j-1)};\beta_{j}\right)$
 
 #### 公式1 (ガウス積分)
@@ -1992,6 +2013,22 @@ $Q.E.D.$
 -----
 $Claim$ 付録A (30)
 $H_q\left(\mathbf{X}^{(t-1)} \mid \mathbf{X}^{(t)}\right) \leq H_q\left(\mathbf{X}^{(t)} \mid \mathbf{X}^{(t-1)}\right)$
+
+$
+H^{}_{condi}= -\int_{x \in X, y \in Y} dxdy \ p^{joint}_{(Y, X)_{abs}}(y, x) \log \left(p^{condi}_{(Y,X)_{abs}}(y \mid x)\right) \\
+$
+
+(次回 6/29)
+- ↑を$q^{0...i}$を使って書く
+- この時、$q^{0...i}$ は joint としてしまえることがわかったので、p^{joint}のところにq^{0...i}をそのまま入れる
+- 型は、$p^{condi}_{(\mathbf{X}^{(t-1)}, \mathbf{X}^{(t)})_{abs}}(\cdot\mid\cdot):\mathbb{R}^{t}\times\mathbb{R}^{t-1} \to \mathbb{R}_{\geq 0}$ みたいになるはず。(ちゃんとやる)
+
+
+$\beta_{t} \geq \sqrt{\frac{1}{2 \pi e}}$ のとき、
+
+$$
+
+$$
 
 (次回 6/22)
 ### メモ
