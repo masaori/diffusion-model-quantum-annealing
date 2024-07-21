@@ -198,8 +198,11 @@ $\mu: \mathfrak{B}(\mathbb{R^{d}}) \rightarrow \mathbb{R}$ を Lebegue Measure �
 $X$: 確率変数
 
 Lebegue の $P_{X_{abs}}$ について、以下を満たす Integrable な関数 $p_{X_{abs}}: \mathbb{R} \to \mathbb{R}_{\geq 0}$ が存在する。
+
+$\forall x \in \mathbb{R}$
+
 $$
-\int_{-\infty}^x p_{X_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{X_{abs}}(X \leq x)
+\int_{-\infty}^x p_{X_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{X_{abs}}((-\infty, x])
 $$
 
 この $P_{X_{abs}}$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
@@ -211,11 +214,14 @@ $$
 #### 多変数の場合
 確率空間$(\Omega, F, P)$と$(X_{1},\dots,X_{d})$: d変数確率変数について、
 
-$(\mathbb{R},\mathfrak{B}(\mathbb{R}), P_{(X_{1},\dots,X_{d})})$: 確率空間 が定まる。
+$(\mathbb{R^{d}},\mathfrak{B}(\mathbb{R^{d}}), P_{(X_{1},\dots,X_{d})})$: 確率空間 が定まる。
 
 Lebegue の $P_{(X_{1}, \dots ,X_{d})_{abs}}$ について、以下を満たす Integrable な関数 $p^{joint}_{(X_{1}, \dots ,X_{d})_{abs}}: \mathbb{R}^{d} \rightarrow \mathbb{R}_{\geq 0}$ が存在する。
+
+$\forall x_{1}, \dots, x_{1} \in \mathbb{R}$
+
 $$
-\int_{-\infty}^{x_{1}} \cdots \int_{-\infty}^{x_{d}} p^{joint}_{(X_{1}, \dots ,X_{d})_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{(X_{1}, \dots ,X_{d})_{abs}}(X_{1} \leq x_{1} \land \dots \land X_{d} \leq x_{d})
+\int_{-\infty}^{x_{1}} \cdots \int_{-\infty}^{x_{d}} p^{joint}_{(X_{1}, \dots ,X_{d})_{abs}}\left(x^{\prime}\right) d x^{\prime}=P_{(X_{1}, \dots ,X_{d})_{abs}}((-\infty, x_{1}] \times \cdots \times (-\infty, x_{d}])
 $$
 
 この $p^{joint}_{(X_{1}, \dots ,X_{d})_{abs}}$ を、結合確率密度関数 (Joint Probabilty Density Function) と呼ぶ。
@@ -228,10 +234,33 @@ $$
 p^{joint}_{(X_{1}, X_{2})_{abs}}(x_{1}, x_{2})=p^{joint}_{(X_{2}, X_{1})_{abs}}(x_{2}, x_{1})
 $$
 
-### Radon-Nikodymの定理の逆
+### Radon-Nikodymの定理の逆っぽい定理
 $Claim.$
 
-$d \in \Z_{\geq 1}$に対して、確率密度関数 $p: \mathbb{R}^{d} \to \mathbb{R}_{\geq 0}$ が存在するとき、確率空間$(\mathbb{R}^{d},\mathfrak{B}(\mathbb{R}^{d}), P_{(X_{1}, \dots ,X_{d})_{abs}})$が存在する。
+$d \in \Z_{\geq 1}$と、実数値関数 $p: \mathbb{R}^{d} \to \mathbb{R}_{\geq 0}$ について、
+
+pが、
+- $p$は可測関数
+- $\int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} p\left(x^{\prime}\right) d x^{\prime}=1$
+
+を満たすとき、
+
+確率空間$(\mathbb{R}^{d},\mathfrak{B}(\mathbb{R}^{d}), P)$がただ一つ存在して、
+
+$\mathbf{x} \in \mathbb{R}^{d}$
+$$
+\int_{-\infty}^{\text{pr}_{1}(\mathbf{x})} \cdots \int_{-\infty}^{\text{pr}_{d}(\mathbf{x})}
+        p\left(\mathbf{x^{\prime}}\right) d \mathbf{x^{\prime}}
+=
+P(
+        (-\infty, \text{pr}_{1}(\mathbf{x})]
+        \times \cdots \times
+        (-\infty, \text{pr}_{d}(\mathbf{x})]
+)
+\quad
+$$
+
+を満たす。
 
 ただし、$1 \leq i \leq d$ に対して、 $X_{i} := \text{pr}_{i}: \mathbb{R}^{d} \to \mathbb{R}$ (射影)
 
@@ -283,8 +312,74 @@ $$
 $$
 
 
+### 条件付き確率
+
+$(\Omega, F, P): 確率空間, A, B \in F$について、
+
+
+$P_{condi}(\cdot\mid\cdot):F\times F\to[0,1]$
+
+
+$$
+P_{condi}(A|B):=\frac{\mathrm{P}(A \cap B)}{\mathrm{P}(B)}
+$$
+
+##### 確率空間複数バージョン
+
+確率空間 $(\mathbb{R}^{d}, \mathfrak{B}(\mathbb{R}^{d}),P_{d})$, $(\mathbb{R}^{d-1}, \mathfrak{B}(\mathbb{R}^{d-1}),P_{d-1})$
+
+確率変数 $X_{d}: \mathbb{R}^{d} \to \mathbb{R}$, $X_{d-1}: \mathbb{R}^{d-1} \to \mathbb{R}$ について、
+
+について、
+
+$A_{d} \in \mathfrak{B}(\mathbb{R}^{d}), B_{d-1} \in \mathfrak{B}(\mathbb{R}^{d-1})$ について、
+
+$P_{condi}^{P_{d},P_{d-1}}: \mathfrak{B}(\mathbb{R}^{d}) \times \mathfrak{B}(\mathbb{R}^{d-1}) \to [0,1]$
+
+$$
+P_{condi}^{P_{d},P_{d-1}}(A_{d} \mid B_{d-1}) := \frac{P_{d}(A_{d} \cap (B_{d-1} \times \mathbb{R}))}{P_{d-1}(B_{d-1})}
+$$
+
+### 条件つき確率密度関数
+確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
+
+$(Y_{1}, Y_{2})$: 1変数確率変数$Y_{1}, Y_{2}$によって定まる2変数確率変数
+
+$p^{condi}_{(Y_{1}, Y_{2})_{abs}}(\cdot\mid\cdot):\mathbb{R}\times\mathbb{R} \to \mathbb{R}_{\geq 0}$
+
+
+$$
+p^{condi}_{(Y_{1}, Y_{2})_{abs}}(y_{1} \mid y_{2}):= \frac{p^{joint}_{(Y_{1}, Y_{2})_{abs}}(y_{1}, y_{2})}{p_{Y_{2\ abs}}(y_{2})}
+$$
+
+##### 確率空間複数バージョン
+確率測度、$P_{condi}^{P_{d},P_{d-1}}$ からRandon-Nikodymの定理により定まる、
+
+$$
+p_{condi}^{P_{d} \mid P_{d-1}}: \mathbb{R}^{d} \times \mathbb{R}^{d-1} \to \mathbb{R}_{\geq 0}
+$$
+
+を、条件付き確率密度関数という
+
+### 結合確率
+
+
+確率空間 $(\mathbb{R}^{d}, \mathfrak{B}(\mathbb{R}^{d}),P_{d})$, $(\mathbb{R}^{d-1}, \mathfrak{B}(\mathbb{R}^{d-1}),P_{d-1})$
+
+確率変数 $X_{d}: \mathbb{R}^{d} \to \mathbb{R}$, $X_{d-1}: \mathbb{R}^{d-1} \to \mathbb{R}$ について、
+
+について、
+
+$A_{d} \in \mathfrak{B}(\mathbb{R}^{d}), B_{d-1} \in \mathfrak{B}(\mathbb{R}^{d-1})$ について、
+
+$$
+P_{joint}(A_{d}, B_{d-1}) := P_{d}(A_{d})P_{condi}(A_{d} \mid B_{d-1})
+$$
+
 
 ### 結合エントロピー (joint entropy)
+
+##### 確率空間ひとつバージョン
 
 確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
 確率変数$X, Y$について、
@@ -301,30 +396,8 @@ H_{joint}(Y, X) = H_{joint}(X, Y) \hspace{40pt} 論文(25)
 $$
 がいえる。
 
-### 条件付き確率
+##### 確率空間複数バージョン
 
-$(\Omega, F, P): 確率空間, A, B \in F$について、
-
-
-$P_{condi}(\cdot\mid\cdot):F\times F\to[0,1]$
-
-
-$$
-P_{condi}(A|B):=\frac{\mathrm{P}(A \cap B)}{\mathrm{P}(B)}
-$$
-
-
-### 条件つき確率密度関数
-確率空間$(\mathbb{R}, \mathfrak{B}(\mathbb{R}),P)$
-
-$(Y_{1}, Y_{2})$: 1変数確率変数$Y_{1}, Y_{2}$によって定まる2変数確率変数
-
-$p^{condi}_{(Y_{1}, Y_{2})_{abs}}(\cdot\mid\cdot):\mathbb{R}\times\mathbb{R} \to \mathbb{R}_{\geq 0}$
-
-
-$$
-p^{condi}_{(Y_{1}, Y_{2})_{abs}}(y_{1} \mid y_{2}):= \frac{p^{joint}_{(Y_{1}, Y_{2})_{abs}}(y_{1}, y_{2})}{p_{Y_{2\ abs}}(y_{2})}
-$$
 
 ### 条件付きエントロピー (conditional entropy)
 
@@ -1278,12 +1351,21 @@ $0 \leq i \leq Tに対して \ X^{(i)} = \mathbb{R}^{n}$
 $1 \leq i \leq Tに対して \ \beta_{i} \in \mathbb{R}$ : t-1とtの間の拡散率
 
 
-$ $
+$X^{(i\dots j)} := \prod_{t=i}^{j} X^{(t)}$
 
-$\mathbf{x}^{(i\dots j)} := (\mathbf{x}^{(i)},\dots , \mathbf{x}^{(j)})\in\prod_{t=i}^{j} X^{(t)}$ と書く
+$\mathbf{x}^{(i\dots j)} := (\mathbf{x}^{(i)},\dots , \mathbf{x}^{(j)}) \in X^{(i\dots j)}$ と書く
 
 
 ## 2.1. Forward Trajectory
+
+次回(7/20)
+- $q^{(0)}$という実数値函数から、$q^{(0...T)}$まで定める
+    - $q^{(0)}$の条件は可測で全域積分すると1, $q^{(0...T)}$も満たしている(はず)
+    - -> 確率空間 $(\R^{T+1}, B(\R^{T+1}), Q^{(0...T)})$ が定まる 
+- $q^{(0...T)}$を周辺化(Tの軸で微分する)すると、$q^{(0...T-1)}$になることを確かめる
+- 結合確率・条件付き確率・エントロピーなど、一通り、確率密度関数を使って定義し直す
+
+
 
 
 $Q^{(0)}: \mathfrak{B}(X^{(0)})\to\mathbb{R}$: 確率測度
@@ -1292,7 +1374,7 @@ $Q^{(0)}: \mathfrak{B}(X^{(0)})\to\mathbb{R}$: 確率測度
 $q^{(0)}_{X_{abs}}:X^{(0)}\to\mathbb{R},\ Q^{(0)}$から定まる確率密度関数
 
 
-$q^{(0\dots i)}_{X_{abs}}:\prod_{t=0}^{i} X^{(t)}\to\mathbb{R}$を
+$q^{(0\dots i)}_{X_{abs}}:X^{(0 \dots i)}\to\mathbb{R}$を
 
 
 $$
@@ -1305,6 +1387,15 @@ $$
 
 
 $q^{(T)}_{X_{abs}}:X^{(T)}\to\mathbb{R},\ q^{(T)}_{X_{abs}}(\mathbf{x}^{(T)}) := \int d \mathbf{y}^{(0 \dots T-1)} q^{(0\dots T)}_{X_{abs}}\left(\mathbf{y}^{(0\dots T-1)},\mathbf{x}^{(T)}\right)$
+
+また、Radon-Nikodymの逆より、$q^{(0\dots i)}_{X_{abs}}, q^{(T)}_{X_{abs}}$からそれぞれ、
+
+$Q^{(0...i)}: \mathfrak{B}(X^{(0 \dots i)})\to\mathbb{R}$: 確率測度
+
+$Q^{(T)}: \mathfrak{B}(X^{(T)})\to\mathbb{R}$: 確率測度
+
+が定まる。
+
 
 ##### 論文との対応
 
