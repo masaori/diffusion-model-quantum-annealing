@@ -2101,6 +2101,8 @@ $$
 
 $Q.E.D.$
 
+めも(次回):  ここからtypst変換続ける
+
 -----
 $Claim$ 付録A (30)
 $H_q\left(\mathbf{X}^{(t-1)} \mid \mathbf{X}^{(t)}\right) \leq H_q\left(\mathbf{X}^{(t)} \mid \mathbf{X}^{(t-1)}\right)$

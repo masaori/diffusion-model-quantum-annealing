@@ -1,0 +1,36 @@
+添付のmarkdown + katexをtypistに変換してください。日本語で記述されている部分は翻訳しないでください。
+
+以下の関数を使用してください。
+
+#import "@preview/cetz:0.1.2"
+
+#let theorem(body, name: none) = { let title = "Theorem" if name != none { title += " (" + name + ")" } block(width: 100%, inset: 1em, radius: 0.3em, stroke: 0.5pt + black, [ #title. #body ]) }
+
+#let proof(body) = { block(width: 100%, inset: 1em, radius: 0.3em, stroke: 0.5pt + black, [ #body #align(right, $square$) ]) }
+
+#set page( paper: "a4", margin: (left: 2cm, right: 2cm, top: 2cm, bottom: 2cm), )
+
+また、数式にはなるべくインデントを入れてください。例えば $ = -integral(x in X, y in Y) dxdy p^("joint")((X, Y)("abs"))(x, y) log (p^("condi")((X, Y)("abs"))(x | y)) - integral(y in Y) dy p(Y("abs"))(y) log p(Y("abs"))(y) + integral(x in X) dx p(X("abs"))(x) log p(X_("abs"))(x) #h(40pt) ("∵def.") $ 
+
+これは、
+
+$
+=
+-integral(x in X, y in Y) dif x dif y
+  p^("joint")((X, Y)("abs"))(x, y)
+  log (
+    p^("condi")((X, Y)("abs"))(x | y)
+  )
+- integral(y in Y) dif y
+  p(Y("abs"))(y) log p(
+    Y("abs")
+  )(y)
++ integral(x in X) dif x
+  p(X("abs"))(x)
+  log p(
+    X_("abs")
+  )(x)
+#h(40pt) ("∵def.")
+$
+
+のようにしてください
