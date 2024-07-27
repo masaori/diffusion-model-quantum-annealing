@@ -77,7 +77,7 @@ $ integral_(- infinity)^(infinity) exp(-a(x-b)^2) dif x = sqrt(pi / a) quad Re{a
 - $(Omega, F), (Psi, G):$ 可測空間
   - $f: (Omega, F) -> (Psi, G)$ で以下を満たす
   - $forall A in G space f^(-1)(A) in F$
-  - ** $f: (Omega, F) -> (Psi, G)$ こう書いたときの実態は $f: F -> G$
+  - \*\* $f: (Omega, F) -> (Psi, G)$ こう書いたときの実態は $f: F -> G$
 
 == 測度空間
 
