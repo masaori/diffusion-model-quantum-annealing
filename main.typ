@@ -1687,5 +1687,490 @@ $
   ゆえに、$beta_t >= sqrt(1 / (2 pi e))$ の時、不等式が成り立つ
 ]
 
-めも(次回):  ここからtypst変換続ける
+#theorem(name: "付録A (30)")[
+  $
+  H_q(
+    bold(X)^(t-1) | bold(X)^(t)
+  ) <= H_q(
+    bold(X)^(t) | bold(X)^(t-1)
+  )
+  $
+]
 
+$
+H^()_("condi") =
+  -integral(x in X, y in Y) dif x dif y
+    p^("joint")_((Y, X)_("abs"))(y, x)
+    log (
+      p^("condi")_((Y,X)_("abs"))(y | x)
+    )
+$
+
+(次回 6/29)
+- ↑を$q^(0...i)$を使って書く
+- この時、$q^(0...i)$ は joint としてしまえることがわかったので、p^(joint)のところにq^(0...i)をそのまま入れる
+- 型は、$p^("condi")_((bold(X)^(t-1), bold(X)^(t)))_("abs")(dot.c|dot.c):RR^t times RR^(t-1) -> RR_(>=0)$ みたいになるはず。(ちゃんとやる)
+
+$beta_(t) >= sqrt(1/(2 pi e))$ のとき、
+
+(次回 6/22)
+=== メモ
+===== 大きな方針
+- とりあえずこの本の理論は最後まで追ってみる
+  - 有限と捉えてちゃんと書いてみた時に、自然と$sqrt(1-beta)$が出てきてくれないか
+  - 代数的確率空間的に書いてみるとどうなるか
+- 各ステップのエントロピー差が有界であることを示している
+  - (30)で上界がわかる
+  - ゴールは (36)
+
+== 2.2. Reverse Trajectory
+
+$
+p^(T)_(X_("abs")):X^(T)->RR,
+p^(T)_(X_("abs"))(bold(x)^(T)) := pi(bold(x)^(T))
+$
+
+$
+p^(i dots T)_(X_("abs")):
+  product_(t=i)^T X^(t)->RR
+$
+
+$
+p^(i dots T)_(X_("abs"))(bold(x)^(i dots T)) :=
+  p^(T)_(X_("abs"))(bold(x)^(T))
+  product_(t=1)^T T_pi(
+    bold(x)^(t-1) | bold(x)^(t)\;beta_(t)
+  )
+$
+
+===== 論文との対応
+
+- $p(bold(x)^(j-1) | bold(x)^(j)) = T_pi(bold(x)^(j-1) | bold(x)^(j)\;beta_(j))$
+
+== 2.3. Model Probability
+
+> これは、統計物理学における準静的過程の場合に相当する
+
+- [非平衡科学](https://sosuke110.com/noneq-phys.pdf)
+- [機械学習のための確率過程](https://www.amazon.co.jp/%E6%A9%9F%E6%A2%B0%E5%AD%A6%E7%BF%92%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E7%A2%BA%E7%8E%87%E9%81%8E%E7%A8%8B%E5%85%A5%E9%96%80-%E2%80%95%E7%A2%BA%E7%8E%87%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%BC%8F%E3%81%8B%E3%82%89%E3%83%99%E3%82%A4%E3%82%BA%E3%83%A2%E3%83%87%E3%83%AB-%E6%8B%A1%E6%95%A3%E3%83%A2%E3%83%87%E3%83%AB%E3%81%BE%E3%81%A7%E2%80%95-%E5%86%85%E5%B1%B1%E7%A5%90%E4%BB%8B-ebook/dp/B0CK176SH5/ref=tmm_kin_swatch_0?_encoding=UTF8&qid=&sr=)
+
+$
+p^(0)_(X_("abs")):X^(0)->RR,
+p^(0)_(X_("abs"))(bold(x)^(0)) :=
+  integral dif bold(y)^(1 dots T)
+    p^(0 dots T)_(X_("abs"))(
+      bold(x)^(0),bold(y)^(1 dots T)
+    )
+$
+
+$
+=
+  integral dif bold(y)^(1 dots T)
+    p^(0 dots T)_(X_("abs"))(
+      bold(x)^(0),bold(y)^(1 dots T)
+    )
+    frac(
+      q^(0 dots T)_(X_("abs"))(
+        bold(x)^(0),bold(y)^(1 dots T)
+      ),
+      q^(0 dots T)_(X_("abs"))(
+        bold(x)^(0),bold(y)^(1 dots T)
+      )
+    )
+$
+
+$
+=
+  integral dif bold(y)^(1 dots T)
+    q^(0 dots T)_(X_("abs"))(
+      bold(x)^(0),bold(y)^(1 dots T)
+    )
+    frac(
+      p^(0 dots T)_(X_("abs"))(
+        bold(x)^(0),bold(y)^(1 dots T)
+      ),
+      q^(0 dots T)_(X_("abs"))(
+        bold(x)^(0),bold(y)^(1 dots T)
+      )
+    )
+$
+
+$
+=
+  integral dif bold(y)^(1 dots T)
+    q^(0 dots T)_(X_("abs"))(
+      bold(x)^(0),bold(y)^(1 dots T)
+    )
+    dot.c
+    frac(
+      p^(T)_(X_("abs"))(bold(y)^(T)),
+      q^(0)_(X_("abs"))(bold(x)^(0))
+    )
+    dot.c
+    frac(
+      T_pi(bold(x)^(0) | bold(y)^(1)\;beta_(t)),
+      T_pi(bold(y)^(1) | bold(x)^(0)\;beta_(t))
+    )
+    dot.c
+    (
+      product_(t=2)^T
+        frac(
+          T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+          T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+        )
+    )
+$
+
+この積分は、複数のサンプル $q^(0 dots T)_(X_("abs"))(bold(x)^(0),bold(y)^(1 dots T))$ の平均を取ることで、素早く評価できる。
+
+$beta_(t)$が無限小のとき、$frac(T_pi(bold(x)^(0) | bold(y)^(1)\;beta_(t)), T_pi(bold(y)^(1) | bold(x)^(0)\;beta_(t))) dot.c (product_(t=2)^T frac(T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)), T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))))=1$となる。
+
+- つまり、$1 <= t <= T$について、$T_pi(bold(x)^(t-1) | bold(y)^(t)\;beta_(t)) = T_pi(bold(x)^(t) | bold(y)^(t-1)\;beta_(t))$ ← ?
+- このとき、上記の積分を評価するのに要求されるのは、単一のサンプル$q^(0 dots T)_(X_("abs"))(bold(x)^(0),bold(y)^(1 dots T))$のみである
+
+> 💡 $q^(0)_(x_(i)):$ 与えられた真のデータの分布  
+> $p^(0)_(x_(i)):$ Reverse trajectoryを用いて計算された、$q^(0)_(x_(i))$の近似
+
+以下で、$p^(0)_(x_(i)), q^(0)_(x_(i))$のCross Entropyを最小化する
+
+== 2.4. Training
+
+$H(p^(0)_(X_("abs")), q^(0)_(X_("abs"))):$ Cross Entropy
+
+$
+H(p^(0)_(X_("abs")), q^(0)_(X_("abs")))
+=
+  -integral_(X^(0)) dif bold(y)^(0)
+    q_(X_("abs"))^(0)(bold(y)^(0))
+    dot.c
+    log p_(X_("abs"))^(0)(bold(y)^(0))
+$
+
+$
+=
+  -integral_(X^(0)) dif bold(y)^(0)
+    q_(X_("abs"))^(0)(bold(y)^(0))
+    dot.c
+    log [
+      integral dif bold(y)^(1 dots T)
+        q^(0 dots T)_(X_("abs"))(
+          bold(y)^(0),bold(y)^(1 dots T)
+        )
+        dot.c
+        frac(
+          p^(T)_(X_("abs"))(bold(y)^(T)),
+          q^(0)_(X_("abs"))(bold(y)^(0))
+        )
+        dot.c
+        frac(
+          T_pi(bold(y)^(0) | bold(y)^(1)\;beta_(t)),
+          T_pi(bold(y)^(1) | bold(y)^(0)\;beta_(t))
+        )
+        dot.c
+        (
+          product_(t=2)^T
+            frac(
+              T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+              T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+            )
+        )
+    ]
+$
+
+$
+=
+  -integral_(X^(0)) dif bold(y)^(0)
+    q_(X_("abs"))^(0)(bold(y)^(0))
+    dot.c
+    log [
+      integral dif bold(y)^(1 dots T)
+        frac(
+          q^(0 dots T)_(X_("abs"))(
+            bold(y)^(0),bold(y)^(1 dots T)
+          ),
+          q^(0)_(X_("abs"))(bold(y)^(0))
+        )
+        dot.c
+        p^(T)_(X_("abs"))(bold(y)^(T))
+        dot.c
+        frac(
+          T_pi(bold(y)^(0) | bold(y)^(1)\;beta_(t)),
+          T_pi(bold(y)^(1) | bold(y)^(0)\;beta_(t))
+        )
+        dot.c
+        (
+          product_(t=2)^T
+            frac(
+              T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+              T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+            )
+        )
+    ]
+$
+
+$
+>=
+  -integral_(X^(0)) dif bold(y)^(0)
+    q_(X_("abs"))^(0)(bold(y)^(0))
+    dot.c
+    (
+      integral_(X^(1 dots T)) dif bold(y)^(1 dots T)
+        dot.c
+        frac(
+          q^(0 dots T)_(X_("abs"))(
+            bold(y)^(0),bold(y)^(1 dots T)
+          ),
+          q^(0)_(X_("abs"))(bold(y)^(0))
+        )
+        dot.c
+        log [
+          p^(T)_(X_("abs"))(bold(y)^(T))
+          dot.c
+          frac(
+            T_pi(bold(y)^(0) | bold(y)^(1)\;beta_(t)),
+            T_pi(bold(y)^(1) | bold(y)^(0)\;beta_(t))
+          )
+          dot.c
+          (
+            product_(t=2)^T
+              frac(
+                T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+                T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+              )
+          )
+        ]
+    )
+$ #h(40pt) (∵ [Jensenの不等式](https://ja.wikipedia.org/wiki/%E3%82%A4%E3%82%A7%E3%83%B3%E3%82%BB%E3%83%B3%E3%81%AE%E4%B8%8D%E7%AD%89%E5%BC%8F), $integral_(X^(1...T)) frac(q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T)), q^(0)_(X_("abs"))(bold(y)^(0))) = 1$ (∵ 周辺分布の定義) )
+
+$
+=
+  -integral_(X^(0)) dif bold(y)^(0)
+    (
+      integral_(X^(1 dots T)) dif bold(y)^(1 dots T)
+        q_(X_("abs"))^(0)(bold(y)^(0))
+        dot.c
+        frac(
+          q^(0 dots T)_(X_("abs"))(
+            bold(y)^(0),bold(y)^(1 dots T)
+          ),
+          q^(0)_(X_("abs"))(bold(y)^(0))
+        )
+        dot.c
+        log [
+          p^(T)_(X_("abs"))(bold(y)^(T))
+          dot.c
+          frac(
+            T_pi(bold(y)^(0) | bold(y)^(1)\;beta_(t)),
+            T_pi(bold(y)^(1) | bold(y)^(0)\;beta_(t))
+          )
+          dot.c
+          (
+            product_(t=2)^T
+              frac(
+                T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+                T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+              )
+          )
+        ]
+    )
+$ #h(40pt) (∵ $q_(X_("abs"))^(0)(bold(y)^(0))$は$integral_(X^(1...T))$において定数)
+
+$
+=
+  - integral_(X^(0 dots T)) dif bold(y)^(0 dots T)
+    q^(0 dots T)_(X_("abs"))(bold(y)^(0 dots T))
+    dot.c
+    log [
+      p^(T)_(X_("abs"))(bold(y)^(T))
+      dot.c
+      (
+        product_(t=1)^T
+          frac(
+            T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+            T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+          )
+      )
+    ]
+$
+
+#h(40pt) (∵ 約分 & 重積分はまとめられる & 細かい略記)　(Appendix B. (38) と一致)
+
+$
+=
+  - integral_(X^(0 dots T)) dif bold(y)^(0 dots T)
+    q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T))
+    dot.c
+    (
+      log [p^(T)_(X_("abs"))(bold(y)^(T))]
+      + sum_(t=1)^T
+        (
+          log [
+            frac(
+              T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+              T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+            )
+          ]
+        )
+    )
+$ (1) #h(40pt) (∵ logを和に分解)
+
+$
+=
+  - integral_(X^(0 dots T)) dif bold(y)^(0 dots T)
+    q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T))
+    dot.c
+    (
+      sum_(t=1)^T
+        (
+          log [
+            frac(
+              T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+              T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+            )
+          ]
+        )
+      + log [p^(T)_(X_("abs"))(bold(y)^(T))]
+    )
+$ (1.5) #h(40pt) (∵ 括弧内の和の順序入れ替え)
+
+$
+=
+  - integral_(X^(0 dots T))
+    (
+      q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T))
+      dot.c
+      sum_(t=1)^T
+        (
+          log [
+            frac(
+              T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+              T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+            )
+          ]
+        )
+    ) dif bold(y)^(0 dots T)
+  - integral_(X^(0 dots T))
+    (
+      q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T))
+      dot.c
+      log [p^(T)_(X_("abs"))(bold(y)^(T))]
+    ) dif bold(y)^(0 dots T)
+$ (2) #h(40pt) (∵ 積分を和で分解)
+
+$
+=
+  - integral_(X^(0 dots T))
+    (
+      q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T))
+      dot.c
+      sum_(t=1)^T
+        (
+          log [
+            frac(
+              T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+              T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+            )
+          ]
+        )
+    ) dif bold(y)^(0 dots T)
+  - integral_(X^(T)) integral_(X^(0 dots T-1))
+    (
+      q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T))
+      dot.c
+      log [p^(T)_(X_("abs"))(bold(y)^(T))]
+    ) dif bold(y)^(0 dots T)
+$ (2.5) #h(40pt) (∵ 第二項の積分を被積分変数で分解)
+
+$
+=
+  - integral_(X^(0 dots T))
+    (
+      q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T))
+      dot.c
+      sum_(t=1)^T
+        (
+          log [
+            frac(
+              T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+              T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+            )
+          ]
+        )
+    ) dif bold(y)^(0 dots T)
+  - integral_(X^(T))
+    (
+      q_(X_("abs"))^(T)(bold(y)^(T))
+      dot.c
+      log [p^(T)_(X_("abs"))(bold(y)^(T))]
+    ) dif bold(y)^(T)
+$ (3) #h(40pt) (∵ 第二項の内側の積分実行)
+
+$
+=
+  - integral_(X^(0 dots T)) dif bold(y)^(0 dots T)
+    q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T))
+    dot.c
+    sum_(t=1)^T
+      (
+        log [
+          frac(
+            T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+            T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+          )
+        ]
+      )
+  - H_("cross")(q^(T)_(X_("abs")), p^(T)_(X_("abs")))
+$ (4) 
+
+$
+=
+  - integral_(X^(0 dots T)) dif bold(y)^(0 dots T)
+    q^(0 dots T)_(X_("abs"))(bold(y)^(0),bold(y)^(1 dots T))
+    dot.c
+    sum_(t=1)^T
+      (
+        log [
+          frac(
+            T_pi(bold(y)^(t-1) | bold(y)^(t)\;beta_(t)),
+            T_pi(bold(y)^(t) | bold(y)^(t-1)\;beta_(t))
+          )
+        ]
+      )
+  - H_("cross")(q^(T)_(X_("abs")), p^(T)_(X_("abs")))
+$ (5) #h(40pt) ← (論文14と対応させたい)
+
+== 2.5. Multiplying Distributions, and Computing Posteriors
+
+== 2.6. Entropy of Reverse Process
+
+= 3. Experiments
+
+== 3.1. Toy Problem
+
+== 3.2. Images
+
+= 4. Conclusion
+
+= メモ
+
+- 小林さんMTGめも
+
+== 小林さんMTGメモ
+
+= ざっくりした物理的イメージ
+
+- 生成モデルって？
+        - 何か → 似たやつを作る
+        - → = 確率分布
+- 確率分布 =  分配関数
+        - 分配関数がわかれば確率分布がわかる
+        - エネルギーが定義できる状況ならなんでも分配関数が使える
+- 情報では？
+        - 尤度 = エネルギー
+        - 学習したデータの尤度を高める = その点のポテンシャルを最小化する
+- エネルギー(尤度)を最適させるのに適切な関数は何？
+        - 機械学習で言えば損失関数
+        - 
+- 量子コンピュータの種類
+        - 量子アニーリング
+        - 量子ゲート
