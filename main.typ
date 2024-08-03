@@ -1,4 +1,5 @@
 #import "@preview/cetz:0.1.2"
+#import "@preview/commute:0.2.0": node, arr, commutative-diagram
 
 #let theorem(body, name: none) = {
   let title = "Theorem"
@@ -21,6 +22,18 @@
   paper: "a2",
   margin: (left: 2cm, right: 2cm, top: 2cm, bottom: 2cm),
 )
+
+#let function(f, A, B, a, b, comment) = {
+  $
+  #grid(
+    columns: 6,
+    gutter: 5pt,
+    $#f$, $:$, $#A$, $->$, $#B$, $#comment$,
+    "", "", rotate(-90deg, $in$), "", rotate(-90deg, $in$), "",
+    "", "", $#a$, $|->$, $#b$,  ""
+  )
+  $
+}
 
 = ゴール
 
@@ -180,7 +193,7 @@ $
 integral_(- infinity)^x p_(X_(abs))(x^') dif x^'=P_(X_(abs))((-infinity, x])
 $
 
-この $P_(X_(abs))$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
+この $p_(X_(abs))$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
 
 - 気温が20度から30度になる確率を求めたい時に、
   - 「気温x度」を実数xにマップする ← 確率変数という
@@ -295,19 +308,30 @@ $p_(
 
 = 平均情報量(エントロピー)
 
-$(Omega, F, P)$: 確率空間
-
-$X$: 確率変数
-
-$(bb{R}, frak{B}(bb{R}),P_X)$: 上記から定まる確率空間
+$$
+#function(
+  $p_("abs")$,
+  $bb(R)^(d)$, $bb(R)$,
+  $(x_(1), ..., x_(d))$, $y$,
+  $"ルベーグ測度" mu "について絶対連続"$
+)
+$$
 
 $
-H^P_("entropy")(X) 
-  := H_("entropy")(p_(X_("abs"))) 
-  := -integral_(x in X) dif x
-    p_(X_("abs"))(x)
-    log p_(X_("abs"))(x)
+H_("entropy")(p_("abs")) 
+  := -integral_(X)
+    lr(
+      (
+        p_("abs")(x)
+        log (p_("abs")(x))
+      ),
+      size: #200%
+    )
+    dif mu (x)
 $
+
+次回(8/3)
+- 順次定義を確率密度関数を使って書き換える
 
 == エントロピーの値の範囲
 
@@ -330,18 +354,18 @@ $
 
 == 確率空間複数バージョン
 
-確率空間 $(bb{R}^d, frak{B}(bb{R}^d),P_d)$, $(bb{R}^(d-1), frak{B}(bb{R}^(d-1)),P_(d-1))$
+確率空間 $(bb(R)^d, frak(B)(bb(R)^d),P_d)$, $(bb(R)^(d-1), frak(B)(bb(R)^(d-1)),P_(d-1))$
 
-確率変数 $X_d: bb{R}^d -> bb{R}$, $X_(d-1): bb{R}^(d-1) -> bb{R}$ について、
+確率変数 $X_d: bb(R)^d -> bb(R)$, $X_(d-1): bb(R)^(d-1) -> bb(R)$ について、
 
-$A_d in frak{B}(bb{R}^d), B_(d-1) in frak{B}(bb{R}^(d-1))$ について、
+$A_d in frak(B)(bb(R)^d), B_(d-1) in frak(B)(bb(R)^(d-1))$ について、
 
-$P_("condi")^(P_d,P_(d-1)): frak{B}(bb{R}^d) times frak{B}(bb{R}^(d-1)) -> [0,1]$
+$P_("condi")^(P_d,P_(d-1)): frak(B)(bb(R)^d) times frak(B)(bb(R)^(d-1)) -> [0,1]$
 
 $
 P_("condi")^(P_d,P_(d-1))(A_d | B_(d-1)) 
   := (
-    P_d(A_d sect (B_(d-1) times bb{R}))
+    P_d(A_d sect (B_(d-1) times bb(R)))
   )/(
     P_(d-1)(B_(d-1))
   )
@@ -349,11 +373,11 @@ $
 
 = 条件つき確率密度関数
 
-確率空間 $(bb{R}, frak{B}(bb{R}),P)$
+確率空間 $(bb(R), frak(B)(bb(R)),P)$
 
 $(Y_1, Y_2)$: 1変数確率変数 $Y_1, Y_2$ によって定まる2変数確率変数
 
-$p^("condi")_((Y_1, Y_2)_("abs"))(dot.c|dot.c):bb{R} times bb{R} -> bb{R}_(>=0)$
+$p^("condi")_((Y_1, Y_2)_("abs"))(dot.c|dot.c):bb(R) times bb(R) -> bb(R)_(>=0)$
 
 $
 p^("condi")_((Y_1, Y_2)_("abs"))(y_1 | y_2) 
@@ -370,18 +394,18 @@ $
 
 $
 p_("condi")^(P_d | P_(d-1)): 
-  bb{R}^d times bb{R}^(d-1) -> bb{R}_(>=0)
+  bb(R)^d times bb(R)^(d-1) -> bb(R)_(>=0)
 $
 
 を、条件付き確率密度関数という
 
 = 結合確率
 
-確率空間 $(bb{R}^d, frak{B}(bb{R}^d),P_d)$, $(bb{R}^(d-1), frak{B}(bb{R}^(d-1)),P_(d-1))$
+確率空間 $(bb(R)^d, frak(B)(bb(R)^d),P_d)$, $(bb(R)^(d-1), frak(B)(bb(R)^(d-1)),P_(d-1))$
 
-確率変数 $X_d: bb{R}^d -> bb{R}$, $X_(d-1): bb{R}^(d-1) -> bb{R}$ について、
+確率変数 $X_d: bb(R)^d -> bb(R)$, $X_(d-1): bb(R)^(d-1) -> bb(R)$ について、
 
-$A_d in frak{B}(bb{R}^d), B_(d-1) in frak{B}(bb{R}^(d-1))$ について、
+$A_d in frak(B)(bb(R)^d), B_(d-1) in frak(B)(bb(R)^(d-1))$ について、
 
 $
 P_("joint")(A_d, B_(d-1)) 
@@ -392,7 +416,7 @@ $
 
 == 確率空間ひとつバージョン
 
-確率空間 $(bb{R}, frak{B}(bb{R}),P)$
+確率空間 $(bb(R), frak(B)(bb(R)),P)$
 確率変数 $X, Y$ について、
 
 $
@@ -416,7 +440,7 @@ $
 
 = 条件付きエントロピー (conditional entropy)
 
-確率空間 $(bb{R}, frak{B}(bb{R}),P)$
+確率空間 $(bb(R), frak(B)(bb(R)),P)$
 
 確率変数 $X, Y$ について、
 
