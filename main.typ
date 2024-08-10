@@ -1,29 +1,52 @@
 #import "@preview/cetz:0.1.2"
 #import "@preview/commute:0.2.0": node, arr, commutative-diagram
 
+#set block(breakable: false)
+
 #let theorem(body, name: none) = {
   let title = "Theorem"
   if name != none {
     title += " (" + name + ")"
   }
   block(width: 100%, inset: 1em, radius: 0.3em, stroke: 0.5pt + black, [
-    *#title.* #body
+    = #title
+    
+    #body
   ])
 }
 
 #let proof(body) = {
   block(width: 100%, inset: 1em, radius: 0.3em, stroke: 0.5pt + black, [
     #body
-    #align(right, $square$)
   ])
 }
+
+#let def(body, name: none) = {
+  let title = "Def."
+  if name != none {
+    title += " (" + name + ")"
+  }
+  block(width: 100%, inset: 1em, radius: 0.3em, fill: rgb("#eeeeee"), [
+    #align(left, [
+      = #title
+    ])
+
+    #body
+  ])
+}
+
+次回(8/10)
+- 定理番号(counter関数)を調べる
+- 順次定義を直す
+    - 一旦連続のみで
+
 
 #set page(
   paper: "a2",
   margin: (left: 2cm, right: 2cm, top: 2cm, bottom: 2cm),
 )
 
-#let function(f, A, B, a, b, comment) = {
+#let mapDef(f, A, B, a, b, comment) = {
   $
   #grid(
     columns: 6,
@@ -150,11 +173,11 @@ $P_(
 が定まり、
 $(RR,frak(B)(RR),P_X)$は確率空間になっている
 
-== Lebesgueの分解定理
+#theorem(name: "Lebesgueの分解定理")[
+
 確率空間$(Omega, F, P)$と確率変数$X$について、
 
 $(RR,frak(B)(RR), P_(X))$: 確率空間 が定まる。
-
 
 $mu: frak(B)(RR) -> RR$ を Lebegue Measure とする.
 $
@@ -165,11 +188,11 @@ $
 - $P_(X_("sing"))$ は $mu$ について、conti. かつ、 singular.
     - すなわち、 $P_(X_("sing"))(a)=0(forall a in RR)$ かつ、 $exists A in A(RR)$ s.t. $mu(A)=0$ and $P_(X_("sing"))(A^c)=0$
 - $P_(X_("dis"))$ は $mu$ について、 discrete.
-    - すなわち、 $exists{a_n}_(n=1)^(infinity) subset RR$ s.t. $P_(X_("dis"))=sum_(i=1)^(infinity) a_i chi_(P_i)(A)$ ただし、($chi_(P_i): B(RR) -> RR, chi_(P_i)(A):={cases(0(p_i not in A), 1(p_i in A))}$)
+    - すなわち、 $exists{a_i}_(i=1)^(infinity) subset RR, {p_i}_(i=1)^(infinity) subset RR$ s.t. $P_(X_("dis"))(A)=sum_(i=1)^(infinity) a_i chi_(p_i)(A)$ ただし、$(chi_(p_i): B(RR) -> RR, chi_(p_i)(A):=cases(0(p_i not in A), 1(p_i in A)))$
 
 と一意に分解できる.
-
-- 拡散モデルの数理を読む上ではPabsだけ考えるでOK
+]
+- 拡散モデルの数理を読む上では$P_abs$だけ考えるでOK
 
 === 多変数の場合
 確率空間$(Omega, F, P)$と確率変数$(X_(1),dots,X_(d))$について、
@@ -183,49 +206,51 @@ $mu: frak(B)(RR^(d)) -> RR$ を Lebegue Measure とする.
 以下は、1変数の場合と同様。
 
 == Radon-Nikodymの定理
-$X$: 確率変数
+#theorem(name: "Radon-Nikodymの定理")[
+  $X$: 確率変数
 
-Lebegue の $P_(X_(abs))$ について、以下を満たす Integrable な関数 $p_(X_(abs)): RR -> RR_(>=0)$ が存在する。
+  Lebegue の $P_(X_(abs))$ について、以下を満たす Integrable な関数 $p_(X_(abs)): RR -> RR_(>=0)$ が存在する。
 
-$forall x in RR$
+  $forall x in RR$
 
-$
-integral_(- infinity)^x p_(X_(abs))(x^') dif x^'=P_(X_(abs))((-infinity, x])
-$
+  $
+  integral_(- infinity)^x p_(X_(abs))(x^') dif x^'=P_(X_(abs))((-infinity, x])
+  $
 
-この $p_(X_(abs))$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
-
+  この $p_(X_(abs))$ を、確率密度関数 (Probabilty Density Function) と呼ぶ。
+]
 - 気温が20度から30度になる確率を求めたい時に、
   - 「気温x度」を実数xにマップする ← 確率変数という
   - 実数直線上で20-30の区間で積分する
 
 === 多変数の場合
-確率空間$(Omega, F, P)$と$(X_(1),dots,X_(d))$: d変数確率変数について、
+#theorem(name: "Radon-Nikodymの定理: 多変数の場合")[
+  確率空間$(Omega, F, P)$と$(X_(1),dots,X_(d))$: d変数確率変数について、
 
-$(RR^(d),frak(B)(RR^(d)), P_(
-  (X_(1),dots,X_(d))
-))$: 確率空間 が定まる。
+  $(RR^(d),frak(B)(RR^(d)), P_(
+    (X_(1),dots,X_(d))
+  ))$: 確率空間 が定まる。
 
-Lebegue の $P_(
-  (X_(1), dots ,X_(d))_(abs)
-)$ について、以下を満たす Integrable な関数 $p^("joint")_(
-  (X_(1), dots ,X_(d))_(abs)
-): RR^(d) -> RR_(>=0)$ が存在する。
+  Lebegue の $P_(
+    (X_(1), dots ,X_(d))_(abs)
+  )$ について、以下を満たす Integrable な関数 $p^("joint")_(
+    (X_(1), dots ,X_(d))_(abs)
+  ): RR^(d) -> RR_(>=0)$ が存在する。
 
-$forall x_(1), dots, x_(1) in RR$
+  $forall x_(1), dots, x_(1) in RR$
 
-$
-integral_(- infinity)^(x_(1)) dots integral_(- infinity)^(x_(d)) p^("joint")_(
-  (X_(1), dots ,X_(d))_(abs)
-)(x^') dif x^'=P_(
-  (X_(1), dots ,X_(d))_(abs)
-)((-infinity, x_(1)] times dots times (-infinity, x_(d)])
-$
+  $
+  integral_(- infinity)^(x_(1)) dots integral_(- infinity)^(x_(d)) p^("joint")_(
+    (X_(1), dots ,X_(d))_(abs)
+  )(x^') dif x^'=P_(
+    (X_(1), dots ,X_(d))_(abs)
+  )((-infinity, x_(1)] times dots times (-infinity, x_(d)])
+  $
 
-この $p^("joint")_(
-  (X_(1), dots ,X_(d))_(abs)
-)$ を、結合確率密度関数 (Joint Probabilty Density Function) と呼ぶ。
-
+  この $p^("joint")_(
+    (X_(1), dots ,X_(d))_(abs)
+  )$ を、結合確率密度関数 (Joint Probabilty Density Function) と呼ぶ。
+]
 #block(inset: (left: 1em))[
   フビニの定理により、$RR^(d)$についての積分はd回の$RR$についての積分と等しくなる。
 ]
@@ -240,8 +265,7 @@ p^("joint")_(
 )(x_(2), x_(1))
 $
 
-== Radon-Nikodymの定理の逆っぽい定理
-#theorem(name: "Claim")[
+#theorem(name: "Radon-Nikodymの定理の逆っぽい定理")[
   $d in ZZ_(>=1)$と、実数値関数 $p: RR^(d) -> RR_(>=0)$ について、
 
   pが、
@@ -304,18 +328,29 @@ $p_(
 ): RR^(d) -> RR_(>=0)$
 
 ---
+
 ↓一つの確率測度(確率分布)$P$について述べている
 
-= 平均情報量(エントロピー)
+#line(length: 100%)
 
-$$
-#function(
-  $p_("abs")$,
-  $bb(R)^(d)$, $bb(R)$,
-  $(x_(1), ..., x_(d))$, $y$,
-  $"ルベーグ測度" mu "について絶対連続"$
-)
-$$
+
+$
+#def[
+  #mapDef(
+    $p^d_("abs")$,
+    $bb(R)^(d)$, $bb(R)$,
+    $(x_(1), ..., x_(d))$, $y$,
+    "可測関数"
+  )
+]
+$
+で、
+$
+integral_(- infinity)^(infinity) dots integral_(- infinity)^(infinity) p(x^') dif x^'=1
+$
+
+
+= 平均情報量(エントロピー)
 
 $
 H_("entropy")(p_("abs")) 
@@ -329,19 +364,15 @@ H_("entropy")(p_("abs"))
     )
     dif mu (x)
 $
+==== エントロピーの値の範囲
 
-次回(8/3)
-- 順次定義を確率密度関数を使って書き換える
-
-== エントロピーの値の範囲
-
-$ 0 <= H_("entropy")(p_(X_("abs"))) $ （誤り）
+$ 0 <= H_("entropy")(p_("abs"))（"誤り"）$
 
 = 条件付き確率
 
-$(Omega, F, P)$: 確率空間, $A, B in F$ について、
+確率密度関数
 
-$P_("condi")(dot.c | dot.c): F times F -> [0,1]$
+$p_("condi")(dot.c | dot.c): F times F -> [0,1]$
 
 $
 P_("condi")(A|B) 
