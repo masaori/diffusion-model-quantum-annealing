@@ -1,44 +1,33 @@
 #import "@preview/cetz:0.1.2"
 #import "@preview/commute:0.2.0": node, arr, commutative-diagram
+#import "@preview/ctheorems:1.1.2": *
+#show: thmrules.with(qed-symbol: $square$)
 
 #set block(breakable: false)
+#set heading(numbering: "1.1.")
 
-#let theorem(body, name: none) = {
-  let title = "Theorem"
-  if name != none {
-    title += " (" + name + ")"
-  }
-  block(width: 100%, inset: 1em, radius: 0.3em, stroke: 0.5pt + black, [
-    = #title
-    
-    #body
-  ])
-}
-
-#let proof(body) = {
-  block(width: 100%, inset: 1em, radius: 0.3em, stroke: 0.5pt + black, [
-    #body
-  ])
-}
-
-#let def(body, name: none) = {
-  let title = "Def."
-  if name != none {
-    title += " (" + name + ")"
-  }
-  block(width: 100%, inset: 1em, radius: 0.3em, fill: rgb("#eeeeee"), [
-    #align(left, [
-      = #title
-    ])
-
-    #body
-  ])
-}
+#let theorem = thmbox("theorem", "Theorem", fill: rgb("#eeffee"))
+#let corollary = thmplain(
+  "corollary",
+  "Corollary",
+  base: "theorem",
+  titlefmt: strong,
+  fill: rgb("#ffeeee")
+)
+#let claim = thmbox("claim", "Claim", fill: rgb("#eeeeff"))
+#let definition = thmbox("definition", "Definition", inset: (x: 1.2em, top: 1em))
+#let example = thmplain("example", "Example").with(numbering: none)
+#let proof = thmproof("proof", "Proof", fill: rgb("#ffffee"))
 
 次回(8/10)
 - 定理番号(counter関数)を調べる
 - 順次定義を直す
     - 一旦連続のみで
+
+#claim("テスト")[
+  これはテストです
+]<testtheorem> 
+
 
 
 #set page(
@@ -173,7 +162,7 @@ $P_(
 が定まり、
 $(RR,frak(B)(RR),P_X)$は確率空間になっている
 
-#theorem(name: "Lebesgueの分解定理")[
+#theorem("Lebesgueの分解定理")[
 
 確率空間$(Omega, F, P)$と確率変数$X$について、
 
@@ -206,7 +195,7 @@ $mu: frak(B)(RR^(d)) -> RR$ を Lebegue Measure とする.
 以下は、1変数の場合と同様。
 
 == Radon-Nikodymの定理
-#theorem(name: "Radon-Nikodymの定理")[
+#theorem("Radon-Nikodymの定理")[
   $X$: 確率変数
 
   Lebegue の $P_(X_(abs))$ について、以下を満たす Integrable な関数 $p_(X_(abs)): RR -> RR_(>=0)$ が存在する。
@@ -224,7 +213,7 @@ $mu: frak(B)(RR^(d)) -> RR$ を Lebegue Measure とする.
   - 実数直線上で20-30の区間で積分する
 
 === 多変数の場合
-#theorem(name: "Radon-Nikodymの定理: 多変数の場合")[
+#theorem("Radon-Nikodymの定理: 多変数の場合")[
   確率空間$(Omega, F, P)$と$(X_(1),dots,X_(d))$: d変数確率変数について、
 
   $(RR^(d),frak(B)(RR^(d)), P_(
@@ -265,7 +254,7 @@ p^("joint")_(
 )(x_(2), x_(1))
 $
 
-#theorem(name: "Radon-Nikodymの定理の逆っぽい定理")[
+#theorem("Radon-Nikodymの定理の逆っぽい定理")[
   $d in ZZ_(>=1)$と、実数値関数 $p: RR^(d) -> RR_(>=0)$ について、
 
   pが、
@@ -335,7 +324,7 @@ $p_(
 
 
 $
-#def[
+#definition[
   #mapDef(
     $p^d_("abs")$,
     $bb(R)^(d)$, $bb(R)$,
@@ -493,7 +482,7 @@ $
     )
 $
 
-#theorem(name: "Claim")[
+#theorem("Claim")[
 以下が成り立つ
 $
 H^P_("condi")(Y | X) 
@@ -807,7 +796,7 @@ P_(cal(P)_n, q): 2^(cal(P)_n) -> RR \
 {x_1,...,x_k} |-> sum_i^k P_(cal(P)_n, q)^(prime)({x_i})
 $
 
-#theorem(name: "1")[
+#theorem("1")[
   $A subset cal(P)$ がopenである時
 
   $
@@ -822,7 +811,7 @@ $
   (右辺)は、大きくなるか変わらない
 ]
 
-#theorem(name: "2")[
+#theorem("2")[
   $A subset cal(P)$について、
 
   $
@@ -831,7 +820,7 @@ $
   $
 ]
 
-#theorem(name: "3")[
+#theorem("3")[
   $A subset cal(P)$が、内部が閉包に含まれるならば、
 
   $
@@ -1220,7 +1209,7 @@ $
 
 
 #theorem(
-  name: $"Claim" H_("entropy")(q^((0 dots t))_(X_("abs"))) >= H_("entropy")(q^((0 dots t-1))_(X_("abs"))) ("論文"(28))$,
+  $"Claim" H_("entropy")(q^((0 dots t))_(X_("abs"))) >= H_("entropy")(q^((0 dots t-1))_(X_("abs"))) ("論文"(28))$,
   [
     $
     T_pi(
@@ -1742,7 +1731,7 @@ $
   ゆえに、$beta_t >= sqrt(1 / (2 pi e))$ の時、不等式が成り立つ
 ]
 
-#theorem(name: "付録A (30)")[
+#theorem("付録A (30)")[
   $
   H_q(
     bold(X)^(t-1) | bold(X)^(t)
