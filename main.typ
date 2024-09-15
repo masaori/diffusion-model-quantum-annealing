@@ -15,19 +15,25 @@
   fill: rgb("#ffeeee")
 )
 #let claim = thmbox("claim", "Claim", fill: rgb("#eeeeff"))
-#let definition = thmbox("definition", "Definition", inset: (x: 1.2em, top: 1em))
+#let definition = thmbox("definition", "Definition", fill: rgb("#eeefef"))
 #let example = thmplain("example", "Example").with(numbering: none)
 #let proof = thmproof("proof", "Proof", fill: rgb("#ffffee"))
 
-次回(8/10)
-- 定理番号(counter関数)を調べる
+次回(8/31)
 - 順次定義を直す
     - 一旦連続のみで
+- counterが種類を跨いで通しになっている方が嬉しい
 
 #claim("テスト")[
   これはテストです
+
+  @testdef
+
 ]<testtheorem> 
 
+#definition("テストdef")[
+  これはテストです
+]<testdef>
 
 
 #set page(
@@ -279,7 +285,9 @@ $
 
   を満たす。
 
-  ただし、$1 <= i <= d$ に対して、 $X_(i) := "pr"_(i): RR^(d) -> RR$ (射影)
+  ただし、$1 <= i <= d$  $X_(i) := "pr"_(i): RR^(d) -> RR$ (射影)
+
+  この実数値関数 $p$ も、用語の濫用で、結合確率密度関数と呼ぶ。
 ]
 
 #proof[
@@ -309,117 +317,127 @@ p_(x_("dis")):RR -> [0,1] \ x arrow P_(x_(3))({x})
 $
 
 
-== d変数確率密度関数
-
-Radon-Nikodymの定理の多変数版から定まる
-$p_(
-  (X_(1), dots ,X_(d))_(abs)
-): RR^(d) -> RR_(>=0)$
-
----
-
-↓一つの確率測度(確率分布)$P$について述べている
-
-#line(length: 100%)
-
-
-$
+= 定義
 #definition[
+  この節において、
+
+  $1 <= i <= d$について、$bb(R)_(i) := bb(R)$と定める。このとき、$product_(i=1)^(d) bb(R)_(i) = bb(R)^(d)$
+
   #mapDef(
-    $p^d_("abs")$,
+    $p^(X^(d))_("abs")$,
     $bb(R)^(d)$, $bb(R)$,
     $(x_(1), ..., x_(d))$, $y$,
     "可測関数"
   )
+  は、
+  - $p^d_("abs")$は可測関数
+  - $integral_(- infinity)^(infinity) dots integral_(- infinity)^(infinity) p^d_("abs")(x^') dif x^'=1$
+  を満たす。
+
+  また、$bb(R)^(d)$上のルベーグ測度を$mu$と書く。
 ]
-$
-で、
-$
-integral_(- infinity)^(infinity) dots integral_(- infinity)^(infinity) p(x^') dif x^'=1
-$
 
+次回(8/31)
+- 順次定義を直す
+    - 一旦連続のみで
 
-= 平均情報量(エントロピー)
-
-$
-H_("entropy")(p_("abs")) 
-  := -integral_(X)
+== 平均情報量(エントロピー)
+#definition("平均情報量(エントロピー)")[
+  $
+  H_("entropy")(p^d_("abs")) 
+  := -integral_(x in bb(R)^(d))
     lr(
       (
-        p_("abs")(x)
-        log (p_("abs")(x))
+        p^d_("abs")(x)
+        log (p^d_("abs")(x))
       ),
       size: #200%
     )
     dif mu (x)
-$
-==== エントロピーの値の範囲
+  $
+]
 
-$ 0 <= H_("entropy")(p_("abs"))（"誤り"）$
 
-= 条件付き確率
+=== エントロピーの値の範囲
 
-確率密度関数
+$ 0 <= H_("entropy")(p^d_("abs"))（"誤り"）$
 
-$p_("condi")(dot.c | dot.c): F times F -> [0,1]$
+// == 条件付き確率
 
-$
-P_("condi")(A|B) 
-  := (
-    P(A sect B)
-  )/(
-    P(B)
+// 確率密度関数
+
+// $p_("condi")(dot.c | dot.c): F times F -> [0,1]$
+
+// $
+// P_("condi")(A|B) 
+//   := (
+//     P(A sect B)
+//   )/(
+//     P(B)
+//   )
+// $
+
+// === 確率空間複数バージョン
+
+// 確率空間 $(bb(R)^d, frak(B)(bb(R)^d),P_d)$, $(bb(R)^(d-1), frak(B)(bb(R)^(d-1)),P_(d-1))$
+
+// 確率変数 $X_d: bb(R)^d -> bb(R)$, $X_(d-1): bb(R)^(d-1) -> bb(R)$ について、
+
+// $A_d in frak(B)(bb(R)^d), B_(d-1) in frak(B)(bb(R)^(d-1))$ について、
+
+// $P_("condi")^(P_d,P_(d-1)): frak(B)(bb(R)^d) times frak(B)(bb(R)^(d-1)) -> [0,1]$
+
+// $
+// P_("condi")^(P_d,P_(d-1))(A_d | B_(d-1)) 
+//   := (
+//     P_d(A_d sect (B_(d-1) times bb(R)))
+//   )/(
+//     P_(d-1)(B_(d-1))
+//   )
+// $
+
+== 条件つき確率密度関数
+
+// 確率空間 $(bb(R), frak(B)(bb(R)),P)$
+
+// $(Y_1, Y_2)$: 1変数確率変数 $Y_1, Y_2$ によって定まる2変数確率変数
+
+// $p^("condi")_((Y_1, Y_2)_("abs"))(dot.c|dot.c):bb(R) times bb(R) -> bb(R)_(>=0)$
+
+// $
+// p^("condi")_((Y_1, Y_2)_("abs"))(y_1 | y_2) 
+//   := (
+//     p^("joint")_((Y_1, Y_2)_("abs"))(y_1, y_2)
+//   )/(
+//     p_(Y_2\ "abs")(y_2)
+//   )
+// $
+
+// === 確率空間複数バージョン
+
+// 確率測度、$P_("condi")^(P_d,P_(d-1))$ からRandon-Nikodymの定理により定まる、
+
+// $
+// p_("condi")^(P_d | P_(d-1)): 
+//   bb(R)^d times bb(R)^(d-1) -> bb(R)_(>=0)
+// $
+
+// を、条件付き確率密度関数という
+
+#definition("条件つき確率密度関数")[
+  $p_("abs")^(d), p_("abs")^(d^(prime))$ について、
+  #mapDef(
+    $p_("condi")^(p_("abs")^(d) | p_("abs")^(d-1))$,
+    $bb(R)^d times bb(R)^(d-1)$, $bb(R)_(>=0)$,
+    $(x^d, x^(d-1))$, $y$,
+    ""
   )
-$
+]
 
-== 確率空間複数バージョン
 
-確率空間 $(bb(R)^d, frak(B)(bb(R)^d),P_d)$, $(bb(R)^(d-1), frak(B)(bb(R)^(d-1)),P_(d-1))$
 
-確率変数 $X_d: bb(R)^d -> bb(R)$, $X_(d-1): bb(R)^(d-1) -> bb(R)$ について、
 
-$A_d in frak(B)(bb(R)^d), B_(d-1) in frak(B)(bb(R)^(d-1))$ について、
-
-$P_("condi")^(P_d,P_(d-1)): frak(B)(bb(R)^d) times frak(B)(bb(R)^(d-1)) -> [0,1]$
-
-$
-P_("condi")^(P_d,P_(d-1))(A_d | B_(d-1)) 
-  := (
-    P_d(A_d sect (B_(d-1) times bb(R)))
-  )/(
-    P_(d-1)(B_(d-1))
-  )
-$
-
-= 条件つき確率密度関数
-
-確率空間 $(bb(R), frak(B)(bb(R)),P)$
-
-$(Y_1, Y_2)$: 1変数確率変数 $Y_1, Y_2$ によって定まる2変数確率変数
-
-$p^("condi")_((Y_1, Y_2)_("abs"))(dot.c|dot.c):bb(R) times bb(R) -> bb(R)_(>=0)$
-
-$
-p^("condi")_((Y_1, Y_2)_("abs"))(y_1 | y_2) 
-  := (
-    p^("joint")_((Y_1, Y_2)_("abs"))(y_1, y_2)
-  )/(
-    p_(Y_2\ "abs")(y_2)
-  )
-$
-
-== 確率空間複数バージョン
-
-確率測度、$P_("condi")^(P_d,P_(d-1))$ からRandon-Nikodymの定理により定まる、
-
-$
-p_("condi")^(P_d | P_(d-1)): 
-  bb(R)^d times bb(R)^(d-1) -> bb(R)_(>=0)
-$
-
-を、条件付き確率密度関数という
-
-= 結合確率
+== 結合確率
 
 確率空間 $(bb(R)^d, frak(B)(bb(R)^d),P_d)$, $(bb(R)^(d-1), frak(B)(bb(R)^(d-1)),P_(d-1))$
 
@@ -432,9 +450,9 @@ P_("joint")(A_d, B_(d-1))
   := P_d(A_d)P_("condi")(A_d | B_(d-1))
 $
 
-= 結合エントロピー (joint entropy)
+== 結合エントロピー (joint entropy)
 
-== 確率空間ひとつバージョン
+=== 確率空間ひとつバージョン
 
 確率空間 $(bb(R), frak(B)(bb(R)),P)$
 確率変数 $X, Y$ について、
@@ -456,9 +474,9 @@ H_("joint")(Y, X) = H_("joint")(X, Y)
 $
 がいえる。
 
-== 確率空間複数バージョン
+=== 確率空間複数バージョン
 
-= 条件付きエントロピー (conditional entropy)
+== 条件付きエントロピー (conditional entropy)
 
 確率空間 $(bb(R), frak(B)(bb(R)),P)$
 
