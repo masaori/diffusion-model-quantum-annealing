@@ -1,23 +1,11 @@
 #import "@preview/cetz:0.1.2"
 #import "@preview/commute:0.2.0": node, arr, commutative-diagram
 #import "@preview/ctheorems:1.1.2": *
-#show: thmrules.with(qed-symbol: $square$)
+#import "theorem.typ": theorem, claim, proof, definition, note, theorem_rules
 
 #set block(breakable: false)
 #set heading(numbering: "1.1.")
-
-#let theorem = thmbox("theorem", "Theorem", fill: rgb("#eeffee"))
-#let corollary = thmplain(
-  "corollary",
-  "Corollary",
-  base: "theorem",
-  titlefmt: strong,
-  fill: rgb("#ffeeee")
-)
-#let claim = thmbox("claim", "Claim", fill: rgb("#eeeeff"))
-#let definition = thmbox("definition", "Definition", fill: rgb("#eeefef"))
-#let example = thmplain("example", "Example").with(numbering: none)
-#let proof = thmproof("proof", "Proof", fill: rgb("#ffffee"))
+#show: theorem_rules.with(qed-symbol: $square$)
 
 次回(8/31)
 - 順次定義を直す
@@ -318,7 +306,7 @@ $
 
 
 = 定義
-#definition[
+#definition("")[
   この節において、
 
   $1 <= i <= d$について、$bb(R)_(i) := bb(R)$と定める。このとき、$product_(i=1)^(d) bb(R)_(i) = bb(R)^(d)$
