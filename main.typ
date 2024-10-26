@@ -10,7 +10,6 @@
 次回(8/31)
 - 順次定義を直す
     - 一旦連続のみで
-- counterが種類を跨いで通しになっている方が嬉しい
 
 #claim("テスト")[
   これはテストです
@@ -309,25 +308,25 @@ $
 #definition("")[
   この節において、
 
-  $1 <= i <= d$について、$bb(R)_(i) := bb(R)$と定める。このとき、$product_(i=1)^(d) bb(R)_(i) = bb(R)^(d)$
+  $1 <= i <= d$について、$bb(R)_(i) := bb(R)$と定め、$product_(i=1)^(d) bb(R)_(i) = bb(R)^(d)$とする。
+
+  また、$bb(R)^(d)$上のルベーグ測度を$mu$と書く。
+
+  このとき、
 
   #mapDef(
-    $p^(X^(d))_("abs")$,
-    $bb(R)^(d)$, $bb(R)$,
+    $p^(d)_("abs")$,
+    $bb(R)^(d)$, $RR_(>=0)$,
     $(x_(1), ..., x_(d))$, $y$,
-    "可測関数"
+    ""
   )
   は、
   - $p^d_("abs")$は可測関数
-  - $integral_(- infinity)^(infinity) dots integral_(- infinity)^(infinity) p^d_("abs")(x^') dif x^'=1$
+  - $integral_(x in bb(R)^(d)) p^d_("abs")(x) dif mu (x) = 1$
   を満たす。
 
-  また、$bb(R)^(d)$上のルベーグ測度を$mu$と書く。
+  この $p^d_("abs")$を、確率密度関数 (Probabilty Density Function) と呼ぶ。
 ]
-
-次回(8/31)
-- 順次定義を直す
-    - 一旦連続のみで
 
 == 平均情報量(エントロピー)
 #definition("平均情報量(エントロピー)")[
@@ -384,7 +383,7 @@ $ 0 <= H_("entropy")(p^d_("abs"))（"誤り"）$
 //   )
 // $
 
-== 条件つき確率密度関数
+// == 条件つき確率密度関数
 
 // 確率空間 $(bb(R), frak(B)(bb(R)),P)$
 
@@ -412,81 +411,157 @@ $ 0 <= H_("entropy")(p^d_("abs"))（"誤り"）$
 
 // を、条件付き確率密度関数という
 
-#definition("条件つき確率密度関数")[
-  $p_("abs")^(d), p_("abs")^(d^(prime))$ について、
-  #mapDef(
-    $p_("condi")^(p_("abs")^(d) | p_("abs")^(d-1))$,
-    $bb(R)^d times bb(R)^(d-1)$, $bb(R)_(>=0)$,
-    $(x^d, x^(d-1))$, $y$,
-    ""
-  )
+== 結合確率密度関数
+
+#definition("結合確率密度関数")[確率密度関数 $p_("abs")^(d), p_("abs")^(d^(prime))$ について、
+
+  確率密度関数 $p_("joint")^(d, d^(prime)) : bb(R)^d times bb(R)^(d^(prime)) -> bb(R)_(>=0)$
+  
+  が、
+
+  $forall x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime))$
+  $
+  integral_(y^(d^prime) in RR^(d^prime))
+    p_("joint")^(d, d^prime)(x^d, y^(d^prime))
+  dif mu (y^d)
+  =
+  p_("abs")^(d)(x^d)
+  $
+  $
+  integral_(y^d in RR^(d))
+    p_("joint")^(d, d^(prime))(y^d, x^(d^prime))
+  dif mu (y^d)
+  =
+  p_("abs")^(d^prime)(x^(d^prime))
+  $
+
+  を満たすとき、$p_("joint")^(d, d^(prime))$を$p_("abs")^(d), p_("abs")^(d^(prime))$の結合確率密度関数という。
+
 ]
 
 
+== 条件付き確率関数
+
+#definition("条件つき確率関数")[確率密度関数 $p_("abs")^(d), p_("abs")^(d^(prime))$ について、
+
+  結合確率密度関数 $p_("joint")^(d, d^(prime)) : bb(R)^d times bb(R)^(d^(prime)) -> bb(R)_(>=0)$ が定まっているとする。
+
+  このとき、
+
+  #mapDef(
+    $p_("condi")^(p_("abs")^(d)|p_("abs")^(d^(prime)),p_("joint")^(d, d^(prime)))$,
+    $bb(R)^d times bb(R)^(d^(prime))$, $bb(R)_(>=0)$,
+    $(x^d | x^(d^(prime)))$, $y$,
+    ""
+  )
+  を、以下のように定め、
+
+  $
+  p_("condi")^(p_("abs")^(d)|p_("abs")^(d^(prime)),p_("joint")^(d, d^(prime)))(x^d | x^(d^(prime)))
+  := 
+  cases(
+    (
+      p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    )/(
+      p_("abs")^(d^(prime))(x^(d^(prime)))
+    ) & ("otherwise"),
+    0 & (p_("abs")^(d^(prime))(x^(d^(prime))) = 0),
+  )  
+  $
+
+  これを$p_("abs")^(d), p_("abs")^(d^(prime))$の条件つき確率密度関数という。
+]
+
+#theorem("条件つき確率関数の性質")[
+  $forall x^(d^prime) in RR^(d^prime)$
+  $
+  p_("condi")^(p_("abs")^(d)|p_("abs")^(d^(prime)),p_("joint")^(d, d^(prime)))(dot, x^(d^prime)): RR^d -> bb(R)_(>=0)"は、確率密度関数"
+  $ 
+
+  #proof([
+    #heading([
+      i) $p_("condi")^(p_("abs")^(d)|p_("abs")^(d^(prime)),p_("joint")^(d, d^(prime)))(dot, x^(d^prime))$は可測], 
+      level: 3, numbering: none
+    )
+
+    TODO: 可測な関数の四則、合成はまた可測なので証明略。
+
+    #heading([
+      ii) $integral_(x^d in RR^d) p_("condi")^(p_("abs")^(d)|p_("abs")^(d^(prime)),p_("joint")^(d, d^(prime)))(x^d, x^(d^prime)) dif mu (x^d)$は可測], 
+      level: 3, numbering: none
+    )
+
+    TODO: jointの定義より明らかなので証明略
+  ])
+]
 
 
-== 結合確率
+==== 重要なfact:
+条件付き確率関数は、確率密度関数が*3つ*ないと定義できない！
 
-確率空間 $(bb(R)^d, frak(B)(bb(R)^d),P_d)$, $(bb(R)^(d-1), frak(B)(bb(R)^(d-1)),P_(d-1))$
-
-確率変数 $X_d: bb(R)^d -> bb(R)$, $X_(d-1): bb(R)^(d-1) -> bb(R)$ について、
-
-$A_d in frak(B)(bb(R)^d), B_(d-1) in frak(B)(bb(R)^(d-1))$ について、
-
-$
-P_("joint")(A_d, B_(d-1)) 
-  := P_d(A_d)P_("condi")(A_d | B_(d-1))
-$
 
 == 結合エントロピー (joint entropy)
 
-=== 確率空間ひとつバージョン
+#definition("結合エントロピー")[確率密度関数 $p_("abs")^(d), p_("abs")^(d^(prime))$ について、
 
-確率空間 $(bb(R), frak(B)(bb(R)),P)$
-確率変数 $X, Y$ について、
+  結合確率密度関数 $p_("joint")^(d, d^(prime)) : bb(R)^d times bb(R)^(d^(prime)) -> bb(R)_(>=0)$ が定まっているとする。
 
-$
-H^P_("joint")(X, Y) 
-  := H_("joint")(p^("joint")_((X, Y)_("abs"))) 
-  := -integral_(x in X, y in Y) dif x dif y
-    p^("joint")_((X, Y)_("abs"))(x, y)
-    log (
-      p^("joint")_((X, Y)_("abs"))(x, y)
-    )
-$
+  このとき、結合エントロピー $H_("joint")(p_("joint")^(d, d^(prime))) in RR$ を以下のように定める。
 
-定義から直ちに、
-$
-H_("joint")(Y, X) = H_("joint")(X, Y) 
-#h(40pt) "論文(25)"
-$
-がいえる。
-
-=== 確率空間複数バージョン
+  $
+  H_("joint")(p_("joint")^(d, d^(prime))) 
+  :=
+  -integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime)))
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    log (p_("joint")^(d, d^(prime))(x^d, x^(d^(prime))))
+  dif mu (x^d, x^(d^(prime)))    
+  $
+]
 
 == 条件付きエントロピー (conditional entropy)
 
-確率空間 $(bb(R), frak(B)(bb(R)),P)$
+// 確率空間 $(bb(R), frak(B)(bb(R)),P)$
 
-確率変数 $X, Y$ について、
+// 確率変数 $X, Y$ について、
 
-$
-H^P_("condi")(Y|X) 
-  := -integral_(x in X, y in Y) dif x dif y
-    p^("joint")_((Y, X)_("abs"))(y, x)
+// $
+// H^P_("condi")(Y|X) 
+//   := -integral_(x in X, y in Y) dif x dif y
+//     p^("joint")_((Y, X)_("abs"))(y, x)
+//     log (
+//       (p^("joint")_((Y, X)_("abs"))(y, x))
+//       /
+//       (p_(X_("abs"))(x))
+//     )
+// $
+// $
+//   = -integral_(x in X, y in Y) dif x dif y
+//     p^("joint")_((Y, X)_("abs"))(y, x)
+//     log (
+//       p^("condi")_((Y,X)_("abs"))(y | x)
+//     )
+// $
+
+#definition("条件付きエントロピー")[確率密度関数 $p_("abs")^(d), p_("abs")^(d^(prime))$ について、
+
+  結合確率密度関数 $p_("joint")^(d, d^(prime)) : bb(R)^d times bb(R)^(d^(prime)) -> bb(R)_(>=0)$ が定まっているとする。
+
+  このとき、条件付きエントロピー $H_("condi")(p_("abs")^(d) | p_("abs")^(d^(prime))) in RR$ を以下のように定める。
+
+  $
+  H_("condi")(p_("abs")^(d) | p_("abs")^(d^(prime))) 
+  :=
+  -integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime)))
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
     log (
-      (p^("joint")_((Y, X)_("abs"))(y, x))
-      /
-      (p_(X_("abs"))(x))
+      p_("condi")^(p_("abs")^(d)|p_("abs")^(d^(prime)),p_("joint")^(d, d^(prime)))(x^d | x^(d^(prime)))
     )
-$
-$
-  = -integral_(x in X, y in Y) dif x dif y
-    p^("joint")_((Y, X)_("abs"))(y, x)
-    log (
-      p^("condi")_((Y,X)_("abs"))(y | x)
-    )
-$
+  dif mu (x^d, x^(d^(prime)))    
+  $
+]
+
+次回(10/26)
+↓の証明から
 
 #theorem("Claim")[
 以下が成り立つ

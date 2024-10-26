@@ -35,9 +35,12 @@
     fill: fill,
     inset: inset,
     radius: radius,
-    [
-      #context title_line():
-    ] + "\n" + content
+    align(
+      left,
+      [
+        #context title_line():
+      ] + "\n" + content
+    )
   )]
 }
 
@@ -154,7 +157,12 @@
   rgb("#ff0000"),
   8pt,
   4pt,
-)[
+)[hoge hogehogehogehogehogehogehoge
+
+  hoge hogehogehogehogehogehogehoge
+  
+  hoge hogehogehogehogehogehogehoge
+  
   hoge hogehogehogehogehogehogehoge
 ]<thorem_1>
 
