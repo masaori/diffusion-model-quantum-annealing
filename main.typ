@@ -328,20 +328,51 @@ $
   この $p^d_("abs")$を、確率密度関数 (Probabilty Density Function) と呼ぶ。
 ]
 
+#note[
+  - $p^d_("abs")$ には、$mu ({ x in RR^(d) | p^d_("abs")(x) = 0 }) = 0$ という条件を付加する必要がある？
+      - これは強すぎるのでなし
+  - 拡張エントロピック関数で考えればOKそう
+]
+
+== $x log(x)$の拡張
+#definition([拡張エントロピック関数 (Extended Entropic Function)])[
+  $
+  #mapDef(
+    "eef",
+    $RR_(>=0)$, $RR$,
+    "x", $cases(
+      x log(x) & (x > 0),
+      0 & (x = 0),
+    )$,
+    ""
+  )
+  $
+]
+
 == 平均情報量(エントロピー)
 #definition("平均情報量(エントロピー)")[
   $
   H_("entropy")(p^d_("abs")) 
   := -integral_(x in bb(R)^(d))
     lr(
-      (
-        p^d_("abs")(x)
-        log (p^d_("abs")(x))
-      ),
+      ("eef"(p^d_("abs")(x))),
       size: #200%
     )
     dif mu (x)
   $
+]
+
+#note[
+  - $-integral_(x in bb(R)^(d))
+    lr(
+      ("eef"(p(x))),
+      size: #200%
+    )
+    dif mu (x)
+  $ が無限大になるような $p(x)$ があるか？
+  - [AIの提案]https://chatgpt.com/c/6741530c-19f8-8001-bb2e-95e714f60f71
+  - $1/x^r$ とかでなんかありそう
+    - 次回(11/23) これ考えてみる
 ]
 
 
@@ -565,20 +596,26 @@ $ 0 <= H_("entropy")(p^d_("abs"))（"誤り"）$
 
 #theorem("Claim")[
 以下が成り立つ
+// $
+// H^P_("condi")(Y | X) 
+//   = H^P_("condi")(X | Y) 
+//     + H^P_("entropy")(Y) 
+//     - H^P_("entropy")(X)
+// $
 $
-H^P_("condi")(Y | X) 
-  = H^P_("condi")(X | Y) 
-    + H^P_("entropy")(Y) 
-    - H^P_("entropy")(X)
+  H_("condi")(p_("abs")^(d^(prime)) | p_("abs")^(d))
+  = H_("condi")(p_("abs")^(d) | p_("abs")^(d^(prime)))
+    + H_("entropy")(p_("abs")^(d^(prime)))
+    - H_("entropy")(p_("abs")^(d))
 $
 ]
 
 #proof[
 $
 ("右辺") 
-  &= H^P_("condi")(X | Y) 
-    + H^P_("entropy")(Y) 
-    - H^P_("entropy")(X) \
+&= H^P_("condi")(X | Y) 
+  + H^P_("entropy")(Y) 
+  - H^P_("entropy")(X) \
 &= -integral_(x in X, y in Y) dif x dif y
     p^("joint")_((X, Y)_("abs"))(x, y)
     log (
@@ -675,6 +712,108 @@ $
   ) \
 &= H^P_("condi")(Y | X) 
 #h(40pt) ("論文(27)")
+$
+
+$
+("右辺")
+  &= H_("condi")(p_("abs")^(d) | p_("abs")^(d^(prime)))
+    + H_("entropy")(p_("abs")^(d^(prime)))
+    - H_("entropy")(p_("abs")^(d)) \
+&= -integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    log (
+      p_("condi")^(p_("abs")^(d)|p_("abs")^(d^(prime)), p_("joint")^(d, d^(prime)))(x^d | x^(d^(prime)))
+    )
+  dif mu (x^d, x^(d^(prime))) \
+  &quad - integral_(x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("abs")^(d^(prime))(x^(d^(prime))) 
+    log (p_("abs")^(d^(prime))(x^(d^(prime))))
+  dif mu (x^(d^(prime))) \
+  &quad + integral_(x^d in bb(R)^d) 
+    p_("abs")^(d)(x^d)
+    log (p_("abs")^(d)(x^d))
+  dif mu (x^d) \
+&= -integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    log (
+      cases(
+        (
+          p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+        )/(
+          p_("abs")^(d^(prime))(x^(d^(prime)))
+        ) & ("otherwise"),
+        0 & (p_("abs")^(d^(prime))(x^(d^(prime))) = 0),
+      )  
+    )
+  dif mu (x^d, x^(d^(prime))) \
+  &quad - integral_(x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("abs")^(d^(prime))(x^(d^(prime))) 
+    log (p_("abs")^(d^(prime))(x^(d^(prime))))
+  dif mu (x^(d^(prime))) \
+  &quad + integral_(x^d in bb(R)^d) 
+    p_("abs")^(d)(x^d)
+    log (p_("abs")^(d)(x^d))
+  dif mu (x^d) \
+&= -integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    (
+      log (p_("joint")^(d, d^(prime))(x^d, x^(d^(prime))))
+      - log (p_("abs")^(d^(prime))(x^(d^(prime))))
+    )
+  dif mu (x^d, x^(d^(prime))) \
+  &quad - integral_(x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("abs")^(d^(prime))(x^(d^(prime))) 
+    log (p_("abs")^(d^(prime))(x^(d^(prime))))
+  dif mu (x^(d^(prime))) \
+  &quad + integral_(x^d in bb(R)^d) 
+    p_("abs")^(d)(x^d)
+    log (p_("abs")^(d)(x^d))
+  dif mu (x^d) \
+&= -integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    log (p_("joint")^(d, d^(prime))(x^d, x^(d^(prime))))
+  dif mu (x^d, x^(d^(prime))) \
+  &quad + integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    log (p_("abs")^(d^(prime))(x^(d^(prime))))
+  dif mu (x^d, x^(d^(prime))) \
+  &quad - integral_(x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("abs")^(d^(prime))(x^(d^(prime))) 
+    log (p_("abs")^(d^(prime))(x^(d^(prime))))
+  dif mu (x^(d^(prime))) \
+  &quad + integral_(x^d in bb(R)^d) 
+    p_("abs")^(d)(x^d)
+    log (p_("abs")^(d)(x^d))
+  dif mu (x^d) \
+&= -integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    log (p_("joint")^(d, d^(prime))(x^d, x^(d^(prime))))
+  dif mu (x^d, x^(d^(prime))) \
+  &quad + integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    log (p_("abs")^(d)(x^d))
+  dif mu (x^d, x^(d^(prime))) \
+&= -integral_(x^d in bb(R)^d, x^(d^(prime)) in bb(R)^(d^(prime))) 
+    p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+    log (
+      (
+        p_("joint")^(d, d^(prime))(x^d, x^(d^(prime)))
+      ) / (
+        p_("abs")^(d)(x^d)
+      )
+    )
+  dif mu (x^d, x^(d^(prime))) \
+&= -integral_(x^(d^(prime)) in bb(R)^(d^(prime)), x^d in bb(R)^d) 
+    p_("joint")^(d^(prime), d)(x^(d^(prime)), x^d)
+    log (
+      (
+        p_("joint")^(d^(prime), d)(x^(d^(prime)), x^d)
+      ) / (
+        p_("abs")^(d)(x^d)
+      )
+    )
+  dif mu (x^(d^(prime)), x^d) \
+&= H_("condi")(p_("abs")^(d^(prime)) | p_("abs")^(d)) \\
 $
 ]
 
